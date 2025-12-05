@@ -1,0 +1,153 @@
+{
+  "layer3_cause": {
+    "layer": "layer3_cause",
+    "test_accuracy": 0.881559220389805,
+    "cv_mean": 0.860731021555764,
+    "cv_std": 0.006876827114468291,
+    "classification_report": {
+      "mental_psychological": {
+        "precision": 0.9098360655737705,
+        "recall": 0.8409090909090909,
+        "f1-score": 0.8740157480314961,
+        "support": 264.0
+      },
+      "systemic_structural": {
+        "precision": 0.8876404494382022,
+        "recall": 0.8876404494382022,
+        "f1-score": 0.8876404494382022,
+        "support": 267.0
+      },
+      "tactical_strategic": {
+        "precision": 0.8881431767337807,
+        "recall": 0.9254079254079254,
+        "f1-score": 0.906392694063927,
+        "support": 429.0
+      },
+      "technical_skill": {
+        "precision": 0.851063829787234,
+        "recall": 0.8556149732620321,
+        "f1-score": 0.8533333333333334,
+        "support": 374.0
+      },
+      "accuracy": 0.881559220389805,
+      "macro avg": {
+        "precision": 0.8841708803832469,
+        "recall": 0.8773931097543126,
+        "f1-score": 0.8803455562167397,
+        "support": 1334.0
+      },
+      "weighted avg": {
+        "precision": 0.8819400423318537,
+        "recall": 0.881559220389805,
+        "f1-score": 0.8813562892806646,
+        "support": 1334.0
+      }
+    },
+    "train_samples": 5335,
+    "test_samples": 1334,
+    "num_classes": 4,
+    "classes": [
+      "mental_psychological",
+      "systemic_structural",
+      "tactical_strategic",
+      "technical_skill"
+    ],
+    "vocabulary_size": 3000
+  },
+  "layer4_time": {
+    "layer": "layer4_time",
+    "test_accuracy": 0.9184397163120568,
+    "cv_mean": 0.9114950883221002,
+    "cv_std": 0.007979105455479682,
+    "classification_report": {
+      "immediate": {
+        "precision": 0.9359823399558499,
+        "recall": 0.9137931034482759,
+        "f1-score": 0.9247546346782988,
+        "support": 464.0
+      },
+      "long_term": {
+        "precision": 0.9079903147699758,
+        "recall": 0.9328358208955224,
+        "f1-score": 0.9202453987730062,
+        "support": 402.0
+      },
+      "short_term": {
+        "precision": 0.9117647058823529,
+        "recall": 0.9117647058823529,
+        "f1-score": 0.9117647058823529,
+        "support": 544.0
+      },
+      "accuracy": 0.9184397163120568,
+      "macro avg": {
+        "precision": 0.9185791202027263,
+        "recall": 0.9194645434087171,
+        "f1-score": 0.9189215797778859,
+        "support": 1410.0
+      },
+      "weighted avg": {
+        "precision": 0.9186580938135068,
+        "recall": 0.9184397163120568,
+        "f1-score": 0.918457305530127,
+        "support": 1410.0
+      }
+    },
+    "train_samples": 5638,
+    "test_samples": 1410,
+    "num_classes": 3,
+    "classes": [
+      "immediate",
+      "long_term",
+      "short_term"
+    ],
+    "vocabulary_size": 2000
+  },
+  "layer5_constructive": {
+    "layer": "layer5_constructive",
+    "test_accuracy": 0.9151429910923582,
+    "cv_mean": 0.9202623825518353,
+    "cv_std": 0.004666160907923074,
+    "classification_report": {
+      "constructive": {
+        "precision": 0.9314917127071823,
+        "recall": 0.9113513513513514,
+        "f1-score": 0.921311475409836,
+        "support": 925.0
+      },
+      "destructive": {
+        "precision": 0.8,
+        "recall": 0.8502415458937198,
+        "f1-score": 0.8243559718969555,
+        "support": 207.0
+      },
+      "hopeful": {
+        "precision": 0.9255952380952381,
+        "recall": 0.932067932067932,
+        "f1-score": 0.9288203086112494,
+        "support": 1001.0
+      },
+      "accuracy": 0.9151429910923582,
+      "macro avg": {
+        "precision": 0.8856956502674734,
+        "recall": 0.8978869431043344,
+        "f1-score": 0.8914959186393471,
+        "support": 2133.0
+      },
+      "weighted avg": {
+        "precision": 0.9159637447667497,
+        "recall": 0.9151429910923582,
+        "f1-score": 0.9154261274527092,
+        "support": 2133.0
+      }
+    },
+    "train_samples": 8528,
+    "test_samples": 2133,
+    "num_classes": 3,
+    "classes": [
+      "constructive",
+      "destructive",
+      "hopeful"
+    ],
+    "vocabulary_size": 2500
+  }
+}

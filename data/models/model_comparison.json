@@ -1,0 +1,32 @@
+{
+  "models": {
+    "Lexicon-based": {
+      "accuracy": 0.65,
+      "f1": 0.63,
+      "confidence": 0.53,
+      "training_time": "< 1 min",
+      "inference_time": "Fast",
+      "complexity": "Low"
+    },
+    "SVM (Regularized)": {
+      "accuracy": 0.7191896454698931,
+      "f1": 0.6890379489494037,
+      "confidence": 0.903,
+      "training_time": "5-10 min",
+      "inference_time": "Fast",
+      "complexity": "Medium"
+    },
+    "IndoBERT": {
+      "accuracy": 0.85,
+      "f1": 0.84,
+      "confidence": 0.92,
+      "training_time": "20-30 min",
+      "inference_time": "Slow",
+      "complexity": "High"
+    }
+  },
+  "best_for_production": "SVM (Regularized)",
+  "best_for_accuracy": "IndoBERT",
+  "best_for_speed": "Lexicon-based",
+  "recommendation": "SVM for production, IndoBERT for research"
+}

@@ -1,0 +1,8 @@
+{
+  "original_rows": 10950,
+  "final_rows": 8931,
+  "removed_duplicates": 2019,
+  "labeled_percentage": 83.68603739782779,
+  "avg_confidence": 0.3923633411712014,
+  "high_confidence_count": 2035
+}

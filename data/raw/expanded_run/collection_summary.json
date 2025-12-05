@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-11-24T11:56:14.054203+00:00",
+  "queries": 40,
+  "raw_videos_found": 1883,
+  "unique_videos": 1240,
+  "videos_after_filter": 497,
+  "videos_saved_to_csv": 497,
+  "comments_saved": 20000,
+  "target_comments": 20000,
+  "target_met": true,
+  "videos_processed_for_comments": 100,
+  "output_dir": "data/raw/expanded_run",
+  "comments_exported": true,
+  "max_videos": 0,
+  "comments_per_video": 200
+}

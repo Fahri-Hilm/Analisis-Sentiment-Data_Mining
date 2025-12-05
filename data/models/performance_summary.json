@@ -1,0 +1,24 @@
+{
+  "single_sample_latency_ms": 0.5767107009887695,
+  "batch_1000_throughput": 44360.60420813494,
+  "max_throughput": 44360.60420813494,
+  "memory_usage_mb": 500,
+  "scalability": "Linear",
+  "comparison": {
+    "Lexicon-based": {
+      "inference_time": 0.001,
+      "memory_mb": 50,
+      "accuracy": 0.65
+    },
+    "SVM (Current)": {
+      "inference_time": 0.0005767107009887696,
+      "memory_mb": 500,
+      "accuracy": 0.719
+    },
+    "IndoBERT (Expected)": {
+      "inference_time": 0.1,
+      "memory_mb": 2000,
+      "accuracy": 0.85
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "processing_info": {
+    "input_file": "data/processed/optimized_clean_comments_v5_hybrid.csv",
+    "output_file": "data/processed/optimized_clean_comments_v6_emotion.csv",
+    "total_comments": 19228,
+    "processing_date": "2025-11-25 02:47:43",
+    "classifier_version": "1.0"
+  },
+  "emotion_distribution": {
+    "neutral_observation": 9057,
+    "future_hope": 4260,
+    "patriotic_sadness": 3670,
+    "constructive_anger": 1085,
+    "respectful_acknowledgment": 477,
+    "passionate_disappointment": 464,
+    "strategic_frustration": 215
+  },
+  "emotion_labels": {
+    "passionate_disappointment": "Kekecewaan Mendalam",
+    "strategic_frustration": "Frustrasi Taktik",
+    "patriotic_sadness": "Kesedihan Nasionalis",
+    "constructive_anger": "Kemarahan Membangun",
+    "respectful_acknowledgment": "Pengakuan Respek",
+    "future_hope": "Harapan Masa Depan",
+    "neutral_observation": "Observasi Netral",
+    "unknown": "Tidak Teridentifikasi"
+  },
+  "confidence_statistics": {
+    "mean": 0.517637527000936,
+    "median": 0.5,
+    "min": 0.25,
+    "max": 1.0,
+    "std": 0.25913620796178266
+  },
+  "confidence_levels": {
+    "high (>0.7)": 4233,
+    "medium (0.5-0.7)": 5827,
+    "low (<0.5)": 9168
+  },
+  "top_emotions": {
+    "neutral_observation": 9057,
+    "future_hope": 4260,
+    "patriotic_sadness": 3670,
+    "constructive_anger": 1085,
+    "respectful_acknowledgment": 477,
+    "passionate_disappointment": 464,
+    "strategic_frustration": 215
+  }
+}

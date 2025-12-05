@@ -1,0 +1,9 @@
+{
+  "model": "LinearSVC with Optimal Regularization",
+  "best_C": 0.1,
+  "train_accuracy": 0.8974250738708316,
+  "test_accuracy": 0.7191896454698931,
+  "overfitting_gap": 0.17823542840093853,
+  "cv_mean": 0.6890379489494037,
+  "status": "Overfitting reduced"
+}

@@ -1,0 +1,8 @@
+{
+  "quota_used": 0,
+  "daily_quota_limit": 10000,
+  "quota_buffer": 2000,
+  "last_reset_time": "2025-11-24T00:00:00",
+  "last_updated": "2025-11-24T18:56:04.128499",
+  "requests_per_minute": 0
+}

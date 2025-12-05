@@ -1,0 +1,26 @@
+,precision,recall,f1-score,support
+coaching_staff,1.0,1.0,1.0,1166.0
+frustration_expression,1.0,1.0,1.0,22.0
+future_hope,1.0,1.0,1.0,336.0
+hopeful_skepticism,1.0,1.0,1.0,1755.0
+immediate_reaction,1.0,1.0,1.0,31.0
+international_collaboration,1.0,1.0,1.0,766.0
+media_analysts,1.0,1.0,1.0,133.0
+negative_criticism,1.0,1.0,1.0,331.0
+neutral_observation,1.0,1.0,1.0,66.0
+opponents,1.0,1.0,1.0,206.0
+passionate_disappointment,1.0,1.0,1.0,148.0
+patriotic_sadness,1.0,1.0,1.0,1049.0
+players,1.0,1.0,1.0,81.0
+positive_support,1.0,1.0,1.0,174.0
+pssi_management,1.0,1.0,1.0,1409.0
+referees,1.0,1.0,1.0,58.0
+respectful_acknowledgment,1.0,1.0,1.0,66.0
+short_term_analysis,1.0,1.0,1.0,11.0
+strategic_frustration,1.0,1.0,1.0,34.0
+systemic_problems,1.0,1.0,1.0,18.0
+technical_performance,1.0,1.0,1.0,1053.0
+youth_investment,1.0,1.0,1.0,18.0
+accuracy,1.0,1.0,1.0,1.0
+macro avg,1.0,1.0,1.0,8931.0
+weighted avg,1.0,1.0,1.0,8931.0

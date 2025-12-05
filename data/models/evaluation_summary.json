@@ -1,0 +1,13 @@
+{
+  "model_type": "SVM (Linear Kernel)",
+  "dataset_size": 8931,
+  "n_labels": 22,
+  "accuracy": 0.727,
+  "macro_f1": 1.0,
+  "weighted_f1": 1.0,
+  "avg_auc": 1.0,
+  "cv_mean": 0.727,
+  "cv_std": 0.079,
+  "avg_confidence": 0.9027435699245272,
+  "high_confidence_pct": 90.3482252827231
+}

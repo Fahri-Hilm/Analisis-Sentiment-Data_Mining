@@ -1,0 +1,118 @@
+{
+  "feature_extraction": [
+    {
+      "config": "Baseline (Count Vectorizer)",
+      "mean_accuracy": 0.6902297626833361,
+      "std_accuracy": 0.004826480223819555
+    },
+    {
+      "config": "TF-IDF (unigrams only)",
+      "mean_accuracy": 0.7398697445335036,
+      "std_accuracy": 0.006337715801038071
+    },
+    {
+      "config": "TF-IDF (unigrams + bigrams)",
+      "mean_accuracy": 0.7415576029039732,
+      "std_accuracy": 0.0044654943105088465
+    },
+    {
+      "config": "TF-IDF (1-3 grams)",
+      "mean_accuracy": 0.7400940825462492,
+      "std_accuracy": 0.0024997398071138206
+    },
+    {
+      "config": "TF-IDF + sublinear_tf",
+      "mean_accuracy": 0.7407695047326449,
+      "std_accuracy": 0.002422046577637263
+    }
+  ],
+  "regularization": [
+    {
+      "C": 0.01,
+      "mean_accuracy": 0.659160975832332,
+      "std_accuracy": 0.008265327922431941
+    },
+    {
+      "C": 0.1,
+      "mean_accuracy": 0.7407695047326449,
+      "std_accuracy": 0.002422046577637263
+    },
+    {
+      "C": 0.5,
+      "mean_accuracy": 0.7350296202223607,
+      "std_accuracy": 0.0026849266979543157
+    },
+    {
+      "C": 1.0,
+      "mean_accuracy": 0.7259124346631382,
+      "std_accuracy": 0.0036829670598258805
+    },
+    {
+      "C": 10.0,
+      "mean_accuracy": 0.6867406094896247,
+      "std_accuracy": 0.004439556719507912
+    }
+  ],
+  "feature_size": [
+    {
+      "max_features": 500,
+      "mean_accuracy": 0.747973099717613,
+      "std_accuracy": 0.006739686310627147
+    },
+    {
+      "max_features": 1000,
+      "mean_accuracy": 0.7497745212854947,
+      "std_accuracy": 0.004416663985736515
+    },
+    {
+      "max_features": 2000,
+      "mean_accuracy": 0.7407695047326449,
+      "std_accuracy": 0.002422046577637263
+    },
+    {
+      "max_features": 3000,
+      "mean_accuracy": 0.736829837716163,
+      "std_accuracy": 0.006959299146462746
+    },
+    {
+      "max_features": 5000,
+      "mean_accuracy": 0.7288384614214666,
+      "std_accuracy": 0.007918082882890585
+    }
+  ],
+  "preprocessing": [
+    {
+      "config": "No preprocessing",
+      "mean_accuracy": 0.7407695047326449,
+      "std_accuracy": 0.002422046577637263
+    },
+    {
+      "config": "min_df = 3",
+      "mean_accuracy": 0.7391934985069482,
+      "std_accuracy": 0.0034674270735444864
+    },
+    {
+      "config": "min_df = 5",
+      "mean_accuracy": 0.7402070753927816,
+      "std_accuracy": 0.0037282710461277735
+    },
+    {
+      "config": "min_df = 5, max_df = 0.7",
+      "mean_accuracy": 0.7402070753927816,
+      "std_accuracy": 0.0037282710461277735
+    },
+    {
+      "config": "min_df = 5, max_df = 0.6",
+      "mean_accuracy": 0.7402070753927816,
+      "std_accuracy": 0.0037282710461277735
+    }
+  ],
+  "contributions": {
+    "Feature Extraction": 5.132784022063708,
+    "Regularization": 5.053974204930878,
+    "Feature Size": 5.954475860215858,
+    "Preprocessing": 5.053974204930878
+  },
+  "baseline_accuracy": 0.6902297626833361,
+  "best_accuracy": 0.7497745212854947
+}

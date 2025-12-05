@@ -1,0 +1,34 @@
+{
+  "input_file": "data/processed/optimized_clean_comments_v4_phrases.csv",
+  "output_file": "data/processed/optimized_clean_comments_v5_hybrid.csv",
+  "total_comments": 19228,
+  "confidence_threshold": 0.4,
+  "v4_unknown_rates": {
+    "root_cause": 65.31620553359684,
+    "time_perspective": 63.34512169752444,
+    "constructiveness": 44.554815893488666
+  },
+  "v5_unknown_rates": {
+    "root_cause": 0.0,
+    "time_perspective": 0.0,
+    "constructiveness": 0.0
+  },
+  "distributions": {
+    "root_cause_v5": {
+      "technical_skill": 7325,
+      "tactical_strategic": 4785,
+      "mental_psychological": 3883,
+      "systemic_structural": 3235
+    },
+    "time_perspective_v5": {
+      "short_term": 9034,
+      "long_term": 6140,
+      "immediate": 4054
+    },
+    "constructiveness_v5": {
+      "hopeful": 9408,
+      "constructive": 6624,
+      "destructive": 3196
+    }
+  }
+}

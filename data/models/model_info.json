@@ -1,0 +1,7 @@
+{
+  "accuracy": 0.733970753655793,
+  "avg_confidence": 0.7173272947979872,
+  "high_confidence_pct": 56.2992125984252,
+  "best_params": "{'C': 10, 'class_weight': 'balanced', 'kernel': 'linear'}",
+  "n_labels": 22
+}

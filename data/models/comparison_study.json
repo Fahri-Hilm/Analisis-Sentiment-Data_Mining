@@ -1,0 +1,24 @@
+{
+  "lexicon_based": {
+    "method": "Lexicon-based",
+    "avg_confidence": 0.53,
+    "high_confidence_pct": 37.5,
+    "labeled_pct": 83.7,
+    "accuracy_estimate": 0.65
+  },
+  "svm_model": {
+    "method": "SVM (Linear)",
+    "avg_confidence": 0.9027435699245272,
+    "high_confidence_pct": 90.3482252827231,
+    "labeled_pct": 100.0,
+    "accuracy_estimate": 0.727
+  },
+  "improvements": {
+    "avg_confidence": 70.32897545745796,
+    "high_confidence_pct": 140.92860075392827,
+    "labeled_pct": 19.474313022700116,
+    "accuracy": 11.84615384615384,
+    "average": 60.644510770060045
+  },
+  "conclusion": "SVM model shows significant improvement over lexicon-based approach across all metrics"
+}

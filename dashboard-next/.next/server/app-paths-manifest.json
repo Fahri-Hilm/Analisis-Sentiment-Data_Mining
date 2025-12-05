@@ -1,0 +1,6 @@
+{
+  "/page": "app/page.js",
+  "/comments/page": "app/comments/page.js",
+  "/api/stats/route": "app/api/stats/route.js",
+  "/api/comments/route": "app/api/comments/route.js"
+}
