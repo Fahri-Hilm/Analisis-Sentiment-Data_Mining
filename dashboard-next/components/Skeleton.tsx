@@ -7,7 +7,7 @@ interface SkeletonProps {
 
 export function Skeleton({ className = "", variant = "rectangular" }: SkeletonProps) {
   const baseClasses = "animate-pulse bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 bg-[length:200%_100%]";
-  
+
   const variantClasses = {
     text: "h-4 rounded",
     circular: "rounded-full",
@@ -16,7 +16,7 @@ export function Skeleton({ className = "", variant = "rectangular" }: SkeletonPr
   };
 
   return (
-    <div 
+    <div
       className={`${baseClasses} ${variantClasses[variant]} ${className}`}
       style={{
         animation: "shimmer 1.5s infinite",
@@ -27,7 +27,7 @@ export function Skeleton({ className = "", variant = "rectangular" }: SkeletonPr
 
 export function StatCardSkeleton() {
   return (
-    <div className="bg-gradient-to-br from-[#1a2942]/80 to-[#0f1c2e]/80 backdrop-blur-md rounded-xl p-6 border border-blue-500/20">
+    <div className="glass-card rounded-xl p-6 border border-slate-700/30">
       <div className="flex items-center gap-3 mb-4">
         <Skeleton variant="rectangular" className="w-12 h-12 rounded-xl" />
       </div>

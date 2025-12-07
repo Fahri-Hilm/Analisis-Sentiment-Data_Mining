@@ -7,12 +7,13 @@ const config: Config = {
     extend: {
       colors: {
         border: "hsl(var(--border))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: { DEFAULT: "hsl(var(--primary))", foreground: "hsl(var(--primary-foreground))" },
-        secondary: { DEFAULT: "hsl(var(--secondary))", foreground: "hsl(var(--secondary-foreground))" },
-        muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
-        accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
+        background: "#020617", // slate-950 (Deep Premium Dark)
+        foreground: "#f8fafc", // slate-50
+        primary: { DEFAULT: "#3b82f6", foreground: "#ffffff" }, // Blue-500
+        secondary: { DEFAULT: "#64748b", foreground: "#ffffff" }, // Slate-500
+        muted: { DEFAULT: "#1e293b", foreground: "#94a3b8" }, // Slate-800
+        accent: { DEFAULT: "#06b6d4", foreground: "#ffffff" }, // Cyan-500
+        card: { DEFAULT: "rgba(30, 41, 59, 0.7)", foreground: "#f8fafc" }, // Glassy Slate-800
       },
       animation: {
         "pulse-slow": "pulse-slow 3s ease-in-out infinite",
@@ -48,6 +49,16 @@ const config: Config = {
           "0%, 100%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
         },
+      },
+      container: {
+        center: true,
+        padding: "2rem",
+        screens: {
+          "2xl": "1400px",
+        },
+      },
+      fontFamily: {
+        mono: ["var(--font-mono)", "monospace"], // Add variable font
       },
     },
   },

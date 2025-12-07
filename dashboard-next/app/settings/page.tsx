@@ -1,177 +1,122 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sidebar } from "@/components/Sidebar";
+
 import { Settings, Cpu, Zap, Target, CheckCircle, TrendingUp } from "lucide-react";
 
+import { useDashboardStats } from "@/hooks/useDashboardStats";
+
 export default function SettingsPage() {
-  const [stats, setStats] = useState<any>(null);
+  const { stats } = useDashboardStats();
 
-  useEffect(() => {
-    fetch("/api/stats").then((r) => r.json()).then(setStats);
-  }, []);
-
-  if (!stats) return (
-    <div className="flex h-screen bg-[#0a1628] text-white overflow-hidden">
-      <Sidebar />
-      <div className="flex-1 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    </div>
-  );
+  if (!stats) return (<div className="flex-1 flex items-center justify-center h-screen text-slate-400 bg-transparent">Memuat Data Model...</div>);
 
   return (
-    <div className="flex h-screen bg-[#0a1628] text-white overflow-hidden">
-      <Sidebar />
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">Konfigurasi Model: Di Balik Layar</h1>
-          <p className="text-gray-400">Pengaturan parameter dan performa algoritma SVM</p>
-        </div>
+    <div className="max-w-7xl mx-auto p-8 relative">
+      {/* Background Ambient Glow */}
+      <div className="absolute top-0 right-0 w-full h-[500px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2" />
 
-        <div className="grid grid-cols-3 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-[#1a2942] to-[#0f1c2e] rounded-xl p-6 border border-blue-500/20">
-            <Target className="w-8 h-8 text-green-400 mb-3" />
-            <div className="text-sm text-gray-400 mb-2">Model Accuracy</div>
-            <div className="text-3xl font-bold text-green-400">{stats.accuracy}%</div>
-            <div className="text-sm text-gray-400 mt-2">SVM + TF-IDF Classifier</div>
-          </div>
-          <div className="bg-gradient-to-br from-[#1a2942] to-[#0f1c2e] rounded-xl p-6 border border-blue-500/20">
-            <Zap className="w-8 h-8 text-blue-400 mb-3" />
-            <div className="text-sm text-gray-400 mb-2">F1-Score</div>
-            <div className="text-3xl font-bold text-blue-400">{stats.f1Score}%</div>
-            <div className="text-sm text-green-400 mt-2">Excellent performance</div>
-          </div>
-          <div className="bg-gradient-to-br from-[#1a2942] to-[#0f1c2e] rounded-xl p-6 border border-blue-500/20">
-            <TrendingUp className="w-8 h-8 text-purple-400 mb-3" />
-            <div className="text-sm text-gray-400 mb-2">Confidence</div>
-            <div className="text-3xl font-bold text-purple-400">{stats.confidence}%</div>
-            <div className="text-sm text-gray-400 mt-2">Prediction confidence</div>
-          </div>
-        </div>
+      <div className="mb-10 relative z-10">
+        <h1 className="text-4xl font-bold flex items-center gap-3 bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+          <Settings className="w-8 h-8 text-blue-400" />Konfigurasi Model: Di Balik Layar
+        </h1>
+        <p className="text-slate-400 text-lg mt-2 font-light tracking-wide">Pengaturan parameter dan performa algoritma SVM</p>
+      </div>
 
-        <div className="grid grid-cols-2 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-[#1a2942] to-[#0f1c2e] rounded-xl p-6 border border-blue-500/20">
-            <h3 className="text-lg font-semibold mb-4">Current Model Configuration</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="font-semibold">Model Type</div>
-                  <div className="text-sm text-gray-400">Support Vector Machine (SVM)</div>
-                </div>
-                <div className="px-4 py-2 bg-green-500/20 text-green-400 rounded-lg text-sm flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
-                  Active
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 relative z-10">
+        {[{
+          icon: Target, label: "Model Accuracy", value: `${stats.accuracy}%`, sub: "SVM + TF-IDF Classifier", color: "text-green-400", border: "border-green-500/20"
+        }, {
+          icon: Zap, label: "F1-Score", value: `${stats.f1Score}%`, sub: "Excellent performance", color: "text-blue-400", border: "border-blue-500/20"
+        }, {
+          icon: TrendingUp, label: "Confidence", value: `${stats.confidence}%`, sub: "Prediction confidence", color: "text-purple-400", border: "border-purple-500/20"
+        }].map((item, i) => (
+          <div key={i} className={`glass-card rounded-xl p-6 border ${item.border}`}>
+            <item.icon className={`w-8 h-8 ${item.color} mb-4`} />
+            <div className="text-sm text-slate-400 mb-1 uppercase tracking-wider font-medium">{item.label}</div>
+            <div className={`text-3xl font-bold font-mono tracking-tight ${item.color}`}>{item.value}</div>
+            <div className="text-xs text-slate-500 mt-2 font-light">{item.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 relative z-10">
+        <div className="glass-card rounded-2xl p-8 border border-slate-800/50">
+          <h3 className="text-lg font-semibold mb-6 text-slate-200">Current Model Configuration</h3>
+          <div className="space-y-6">
+            <div className="flex justify-between items-center group">
+              <div>
+                <div className="font-semibold text-slate-200">Model Type</div>
+                <div className="text-sm text-slate-400 font-light">Support Vector Machine (SVM)</div>
               </div>
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="font-semibold">Feature Extraction</div>
-                  <div className="text-sm text-gray-400">TF-IDF Vectorizer</div>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="font-semibold">Training Data</div>
-                  <div className="text-sm text-gray-400">5,631 labeled comments (from {stats.total?.toLocaleString()} total)</div>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="font-semibold">Validation Method</div>
-                  <div className="text-sm text-gray-400">5-Fold Cross-Validation</div>
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="font-semibold">Model File</div>
-                  <div className="text-sm text-blue-400">data/models/sentiment_svm_model.joblib</div>
-                </div>
+              <div className="px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-lg text-xs font-medium uppercase tracking-wider flex items-center gap-2 border border-emerald-500/20">
+                <CheckCircle className="w-4 h-4" />Active
               </div>
             </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-[#1a2942] to-[#0f1c2e] rounded-xl p-6 border border-blue-500/20">
-            <h3 className="text-lg font-semibold mb-4">Training Results</h3>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm text-gray-400">Cross-Validation Accuracy</span>
-                  <span className="text-sm font-semibold text-green-400">{stats.accuracy}%</span>
-                </div>
-                <div className="w-full bg-[#0f1c2e] rounded-full h-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{ width: `${stats.accuracy}%` }}></div>
-                </div>
+            {[
+              { label: "Feature Extraction", value: "TF-IDF Vectorizer" },
+              { label: "Training Data", value: `5,631 labeled comments (from ${stats.total?.toLocaleString()} total)` },
+              { label: "Validation Method", value: "5-Fold Cross-Validation" },
+              { label: "Model File", value: "data/models/sentiment_svm_model.joblib", color: "text-blue-400 font-mono text-sm" }
+            ].map((item, i) => (
+              <div key={i} className="group">
+                <div className="font-semibold text-slate-200 mb-1">{item.label}</div>
+                <div className={`text-sm ${item.color || "text-slate-400 font-light font-mono"}`}>{item.value}</div>
               </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm text-gray-400">F1-Score (Weighted)</span>
-                  <span className="text-sm font-semibold text-blue-400">{stats.f1Score}%</span>
-                </div>
-                <div className="w-full bg-[#0f1c2e] rounded-full h-2">
-                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${stats.f1Score}%` }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm text-gray-400">Test Set Accuracy</span>
-                  <span className="text-sm font-semibold text-purple-400">{stats.confidence}%</span>
-                </div>
-                <div className="w-full bg-[#0f1c2e] rounded-full h-2">
-                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: `${stats.confidence}%` }}></div>
-                </div>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm text-gray-400">Overfitting Gap</span>
-                  <span className="text-sm font-semibold text-yellow-400">2.6%</span>
-                </div>
-                <div className="w-full bg-[#0f1c2e] rounded-full h-2">
-                  <div className="bg-yellow-500 h-2 rounded-full" style={{ width: "2.6%" }}></div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-[#1a2942] to-[#0f1c2e] rounded-xl p-6 border border-blue-500/20 mb-6">
-          <h3 className="text-lg font-semibold mb-4">Sentiment Classification Results</h3>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-[#0f1c2e] rounded-lg p-4 border border-blue-500/10">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span className="font-medium">Negative</span>
+        <div className="glass-card rounded-2xl p-8 border border-slate-800/50">
+          <h3 className="text-lg font-semibold mb-6 text-slate-200">Training Results</h3>
+          <div className="space-y-6">
+            {[
+              { label: "Cross-Validation Accuracy", value: stats.accuracy, color: "bg-green-500", text: "text-green-400" },
+              { label: "F1-Score (Weighted)", value: stats.f1Score, color: "bg-blue-500", text: "text-blue-400" },
+              { label: "Test Set Accuracy", value: stats.confidence, color: "bg-purple-500", text: "text-purple-400" },
+              { label: "Overfitting Gap", value: 2.6, color: "bg-yellow-500", text: "text-yellow-400", suffix: "%", width: 2.6 } // Manual fixed width for logic consistency
+            ].map((metric, i) => (
+              <div key={i}>
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-slate-400">{metric.label}</span>
+                  <span className={`text-sm font-bold ${metric.text}`}>{metric.value}{metric.suffix || "%"}</span>
+                </div>
+                <div className="w-full bg-slate-800/50 rounded-full h-2">
+                  <div className={`h-2 rounded-full ${metric.color} shadow-[0_0_8px] shadow-${metric.color.split("-")[1]}-500/50`} style={{ width: `${metric.width || metric.value}%` }}></div>
+                </div>
               </div>
-              <div className="text-2xl font-bold">{stats.negative?.toLocaleString()}</div>
-              <div className="text-sm text-gray-400">{stats.negativePercent}% of total</div>
-            </div>
-            <div className="bg-[#0f1c2e] rounded-lg p-4 border border-blue-500/10">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="font-medium">Positive</span>
-              </div>
-              <div className="text-2xl font-bold">{stats.positive?.toLocaleString()}</div>
-              <div className="text-sm text-gray-400">{stats.positivePercent}% of total</div>
-            </div>
-            <div className="bg-[#0f1c2e] rounded-lg p-4 border border-blue-500/10">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-3 h-3 rounded-full bg-gray-500"></div>
-                <span className="font-medium">Neutral</span>
-              </div>
-              <div className="text-2xl font-bold">{stats.neutral?.toLocaleString()}</div>
-              <div className="text-sm text-gray-400">{stats.neutralPercent}% of total</div>
-            </div>
+            ))}
           </div>
         </div>
+      </div>
 
-        <div className="bg-gradient-to-br from-[#1a2942] to-[#0f1c2e] rounded-xl p-6 border border-blue-500/20">
-          <h3 className="text-lg font-semibold mb-4">Model Actions</h3>
-          <div className="flex gap-4">
-            <button className="px-6 py-3 bg-blue-500 rounded-lg hover:bg-blue-600 transition">Retrain Model</button>
-            <button className="px-6 py-3 bg-green-500 rounded-lg hover:bg-green-600 transition">Export Model</button>
-            <button className="px-6 py-3 bg-purple-500 rounded-lg hover:bg-purple-600 transition">Test Model</button>
-            <button className="px-6 py-3 bg-gray-600 rounded-lg hover:bg-gray-700 transition">View Logs</button>
-          </div>
+      <div className="glass-card rounded-2xl p-8 border border-slate-800/50 mb-8 relative z-10">
+        <h3 className="text-lg font-semibold mb-6 text-slate-200">Sentiment Classification Results</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { label: "Negative", count: stats.negative, pct: stats.negativePercent, color: "bg-red-500" },
+            { label: "Positive", count: stats.positive, pct: stats.positivePercent, color: "bg-green-500" },
+            { label: "Neutral", count: stats.neutral, pct: stats.neutralPercent, color: "bg-slate-500" }
+          ].map((item, i) => (
+            <div key={i} className="bg-slate-900/40 rounded-xl p-5 border border-slate-800/50 hover:bg-slate-800/40 transition-colors">
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-3 h-3 rounded-full ${item.color} shadow-[0_0_8px] shadow-${item.color.split('-')[1]}-500/50`}></div>
+                <span className="font-medium text-slate-200">{item.label}</span>
+              </div>
+              <div className="text-3xl font-bold text-white mb-1">{item.count?.toLocaleString()}</div>
+              <div className="text-sm text-slate-500 font-light">{item.pct}% of total</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="glass-card rounded-2xl p-8 border border-slate-800/50 relative z-10">
+        <h3 className="text-lg font-semibold mb-6 text-slate-200">Model Actions</h3>
+        <div className="flex flex-wrap gap-4">
+          <button className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-900/20 transition-all font-medium">Retrain Model</button>
+          <button className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-lg shadow-emerald-900/20 transition-all font-medium">Export Model</button>
+          <button className="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl shadow-lg shadow-purple-900/20 transition-all font-medium">Test Model</button>
+          <button className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl transition-all font-medium">View Logs</button>
         </div>
       </div>
     </div>

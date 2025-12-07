@@ -10,15 +10,13 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.5.2-orange?logo=scikit-learn&logoColor=white)
 
-![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js&logoColor=white)![Dash](https://img.shields.io/badge/Dash-3.3.0-purple?logo=plotly&logoColor=white)
-
-![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.5.2-orange?logo=scikit-learn&logoColor=white)![License](https://img.shields.io/badge/License-MIT-green)
-
-![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css&logoColor=white)![Status](https://img.shields.io/badge/Status-Production--Ready-success)
-
+![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-2.12-red?logo=react&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Production--Ready-success)
 
-![Status](https://img.shields.io/badge/Status-Production--Ready-success)**Sistem analisis sentimen otomatis untuk komentar YouTube menggunakan Machine Learning**
+**Sistem analisis sentimen otomatis untuk komentar YouTube menggunakan Machine Learning**
 
 
 
@@ -112,7 +110,7 @@ Sistem analisis sentimen komprehensif untuk menganalisis opini publik Indonesia 
 
 - **API**: YouTube Data API v3
 
-### 📱 Modern Dashboard (Next.js 14)- **Visualization**: Plotly, Streamlit
+### 📱 Modern Dashboard (Next.js 14)- **Visualization**: Recharts, Next.js
 
 - ✅ **Clean & Symmetric Design** - UI/UX modern dan responsif- **Data Storage**: Pandas, CSV, Pickle
 
@@ -205,14 +203,12 @@ pip install -r requirements.txtpip install -r requirements.txt
 ```
 
 # 4. Run dashboard
-
----python src/visualization/dashboard_ultimate.py
-
-```
-
-## 📁 Project Structure
-
-**Access:** http://localhost:8052
+ 
+ cd dashboard-next
+ npm install
+ npm run dev
+ 
+ **Access:** http://localhost:3000
 
 ```
 
@@ -270,7 +266,7 @@ Analisis-Sentiment-Data_Mining/### 🎬 Demo
 
 ││   ├── preprocessing/          # Text preprocessing
 
-├── 📂 data/│   ├── modeling/               # Model training
+├── 📂 data/                   # Data directories│   ├── modeling/               # Model training
 
 │   ├── raw/                   # Raw YouTube data│   │   ├── train_indobert.py
 
@@ -278,11 +274,10 @@ Analisis-Sentiment-Data_Mining/### 🎬 Demo
 
 │   │   └── comments_cleaned_retrained.csv  # Main dataset (19,228)│   └── visualization/          # Dashboards
 
-│   └── models/                # Trained models│       ├── dashboard_pro.py
-
-│       ├── svm_sentiment_model.pkl│       └── dashboard_ultimate.py
-
-│       ├── tfidf_vectorizer.pkl└── notebooks/                  # Jupyter notebooks
+│   └── models/                # Trained models│   │   └── compare_models.py
+│   └── visualization/          # Dashboards
+│       └── dashboard-next/     # Main Dashboard
+└── notebooks/                  # Jupyter notebooks
 
 │       └── evaluation_results.json```
 
@@ -413,30 +408,19 @@ NEXT_PUBLIC_API_URL=http://localhost:3000# Train IndoBERT (Optional - requires G
 ### Model Settings
 
 - **Algorithm**: SVM (Support Vector Machine)### 4. Launch Dashboard
-
-- **Kernel**: Linear
-
-- **Vectorizer**: TF-IDF (max_features=5000)```bash
-
-- **C Parameter**: 1.0 (regularization)# Ultimate Dashboard (All features)
-
-python src/visualization/dashboard_ultimate.py
-
----
-
-# Professional Dashboard (Clean UI)
-
-## 📚 API Referencepython src/visualization/dashboard_pro.py
-
-```
+ 
+ ```bash
+ cd dashboard-next
+ npm run dev
+ ```
+ 
+ **Access**: http://localhost:3000
 
 ### GET /api/stats
 
 Returns dashboard statistics from CSV data.### 5. Model Comparison
 
-
-
-**Response:**```bash
+```bash
 
 ```jsonpython src/modeling/compare_models.py
 
@@ -560,11 +544,11 @@ Distributed under the MIT License. See `LICENSE` for more information.1. Model E
 
 <div align="center">
 
-### Ultimate Dashboard (Port 8052)
-
-**⚽ Garuda: Mimpi Dunia yang Tertunda**
-
-**Interactive Filters:**
+### Dashboard Features
+ 
+ **⚽ Garuda: Mimpi Dunia yang Tertunda**
+ 
+ **Interactive Filters:**
 
 *Menganalisis sentimen publik Indonesia terhadap perjalanan Timnas menuju Piala Dunia*- 📅 Date range picker
 
