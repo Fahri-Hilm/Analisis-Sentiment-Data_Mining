@@ -15,10 +15,8 @@ interface StatCardProps {
 export function StatCard({ icon: Icon, label, value, change, trend }: StatCardProps) {
   const [mounted, setMounted] = useState(false);
 
-  // Parse the value to determine if it's a number
   const numericValue = parseFloat(value.replace(/[^0-9.-]/g, ""));
   const isPercentage = value.includes("%");
-  const hasComma = value.includes(",");
   const decimals = isPercentage ? 1 : 0;
 
   const { formattedValue } = useCountUp({
@@ -35,26 +33,39 @@ export function StatCard({ icon: Icon, label, value, change, trend }: StatCardPr
   const displayValue = mounted && !isNaN(numericValue) ? formattedValue : value;
 
   return (
-    <div className="glass-card rounded-xl p-6 
-                    border border-primary/20 hover:scale-105 hover:border-primary/50 
-                    hover:shadow-lg hover:shadow-primary/20 hover:bg-card
-                    transition-all duration-300 cursor-pointer group relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+    <div className="elegant-card group overflow-hidden">
+      {/* Icon with elegant background */}
+      <div className="flex items-start justify-between mb-5">
+        <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 
+                      border border-blue-500/20 group-hover:border-blue-400/40 
+                      transition-all duration-300 group-hover:scale-105">
+          <Icon className="w-5 h-5 text-blue-400" strokeWidth={2} />
+        </div>
+        
+        {/* Trend badge */}
+        <span className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-smooth ${
+          trend === "up" 
+            ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/20' 
+            : 'text-red-400 bg-red-500/10 border border-red-500/20'
+        }`}>
+          {change}
+        </span>
+      </div>
 
-      <div className="flex items-center gap-3 mb-4 relative z-10">
-        <div className="w-12 h-12 bg-gradient-to-br from-primary/80 to-blue-600 rounded-xl flex items-center justify-center 
-                        group-hover:from-primary group-hover:to-blue-500 group-hover:shadow-lg group-hover:shadow-primary/30
-                        transition-all duration-300 ring-1 ring-primary/20">
-          <Icon className="w-6 h-6 text-white" />
-        </div>
+      {/* Value - Large elegant number */}
+      <div className="stat-number text-slate-50 mb-2 group-hover:text-white transition-smooth">
+        {displayValue}
       </div>
-      <div className="text-sm text-slate-400 mb-1 font-medium">{label}</div>
-      <div className="flex items-end justify-between relative z-10">
-        <div className="text-2xl font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent font-mono">
-          {displayValue}
-        </div>
-        <div className={`text-sm font-semibold px-2 py-0.5 rounded-full bg-slate-900/50 border border-slate-800 ${trend === "up" ? "text-emerald-400" : "text-rose-400"}`}>{change}</div>
-      </div>
+
+      {/* Label */}
+      <p className="text-sm text-slate-400 font-medium tracking-tight group-hover:text-slate-300 transition-smooth">
+        {label}
+      </p>
+
+      {/* Subtle bottom accent line */}
+      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r 
+                    from-transparent via-blue-500/30 to-transparent 
+                    opacity-0 group-hover:opacity-100 transition-smooth" />
     </div>
   );
 }

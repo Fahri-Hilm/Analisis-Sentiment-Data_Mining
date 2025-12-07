@@ -2,20 +2,32 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, MessageSquare, BarChart3, Database, Settings, FileText, Activity } from "lucide-react";
+import { 
+  LayoutDashboard, 
+  MessageSquare, 
+  TrendingUp, 
+  Heart, 
+  Database, 
+  Activity, 
+  Zap,
+  FileText,
+  Settings
+} from "lucide-react";
 
 export function Sidebar() {
   const pathname = usePathname();
 
-  const platformItems = [
+  const analysisItems = [
     { href: "/", icon: LayoutDashboard, label: "Dashboard" },
-    { href: "/comments", icon: MessageSquare, label: "Comments" },
-    { href: "/analytics", icon: BarChart3, label: "Analytics" },
-    { href: "/dataset", icon: Database, label: "Dataset" },
+    { href: "/sentiment", icon: TrendingUp, label: "Sentiment Analysis" },
+    { href: "/emotions", icon: Heart, label: "Emotion Insights" },
+    { href: "/comments", icon: MessageSquare, label: "Comments Explorer" },
+    { href: "/model", icon: Activity, label: "Model Performance" },
   ];
 
-  const systemItems = [
-    { href: "/settings", icon: Settings, label: "Model Settings" },
+  const toolsItems = [
+    { href: "/analytics", icon: Zap, label: "Live Analyzer" },
+    { href: "/dataset", icon: Database, label: "Dataset" },
     { href: "/docs", icon: FileText, label: "Documentation" },
   ];
 
@@ -43,7 +55,6 @@ export function Sidebar() {
 
   return (
     <div className="w-72 bg-[#020617]/80 border-r border-slate-800/50 flex flex-col h-screen backdrop-blur-xl fixed left-0 top-0 z-50">
-      {/* Logo Section */}
       <div className="p-6 mb-2">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300 border border-blue-400/20">
@@ -56,28 +67,26 @@ export function Sidebar() {
         </Link>
       </div>
 
-      {/* Navigation */}
       <div className="flex-1 overflow-y-auto py-2 space-y-8 no-scrollbar">
         <div>
-          <div className="px-6 mb-3 text-xs font-semibold text-slate-500 uppercase tracking-widest font-mono">Platform</div>
+          <div className="px-6 mb-3 text-xs font-semibold text-slate-500 uppercase tracking-widest font-mono">Analysis</div>
           <nav className="flex flex-col space-y-1">
-            {platformItems.map((item) => (
+            {analysisItems.map((item) => (
               <NavItem key={item.href} item={item} />
             ))}
           </nav>
         </div>
 
         <div>
-          <div className="px-6 mb-3 text-xs font-semibold text-slate-500 uppercase tracking-widest font-mono">System</div>
+          <div className="px-6 mb-3 text-xs font-semibold text-slate-500 uppercase tracking-widest font-mono">Tools</div>
           <nav className="flex flex-col space-y-1">
-            {systemItems.map((item) => (
+            {toolsItems.map((item) => (
               <NavItem key={item.href} item={item} />
             ))}
           </nav>
         </div>
       </div>
 
-      {/* User Profile / Footer */}
       <div className="p-4 border-t border-slate-800/50 bg-[#020617]/50">
         <div className="glass-card rounded-xl p-3 border border-slate-800/50 hover:border-slate-700/50 transition-colors group cursor-pointer flex items-center gap-3">
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-sm shadow-md">

@@ -2,8 +2,19 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
+// In-memory cache
+let cachedStats: any = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export async function GET() {
   try {
+    // Return cached data if still valid
+    const now = Date.now();
+    if (cachedStats && (now - cacheTimestamp) < CACHE_DURATION) {
+      return NextResponse.json(cachedStats);
+    }
+
     const filePath = path.join(process.cwd(), "../data/processed/comments_cleaned_retrained.csv");
     const fileContent = fs.readFileSync(filePath, "utf-8");
     const lines = fileContent.split("\n");
@@ -78,7 +89,7 @@ export async function GET() {
         percentage: totalTargets > 0 ? ((count / totalTargets) * 100).toFixed(1) : "0",
       }));
     
-    return NextResponse.json({
+    const result = {
       total,
       positive,
       neutral,
@@ -100,6 +111,16 @@ export async function GET() {
       accuracy: 89.4,
       confidence: 92.0,
       f1Score: 91.0,
+    };
+
+    // Cache the result
+    cachedStats = result;
+    cacheTimestamp = Date.now();
+
+    return NextResponse.json(result, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+      },
     });
   } catch (error) {
     console.error("Stats API Error:", error);

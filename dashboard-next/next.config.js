@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    swcMinify: true, // Enable SWC minification for faster builds and optimization
+    swcMinify: true,
     compiler: {
-        removeConsole: process.env.NODE_ENV === "production", // Remove console.log in prod
+        removeConsole: process.env.NODE_ENV === "production",
+    },
+    compress: true,
+    poweredByHeader: false,
+    reactStrictMode: true,
+    experimental: {
+        optimizePackageImports: ['recharts', 'lucide-react', 'framer-motion'],
     },
 };
-
 
 module.exports = nextConfig;
