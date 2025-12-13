@@ -7,8 +7,22 @@ const nextConfig = {
     compress: true,
     poweredByHeader: false,
     reactStrictMode: true,
+    generateEtags: false,
     experimental: {
-        optimizePackageImports: ['recharts', 'lucide-react', 'framer-motion'],
+        optimizePackageImports: ['recharts', 'framer-motion', 'lucide-react'],
+        optimizeCss: true,
+        turbo: {
+            rules: {
+                '*.svg': {
+                    loaders: ['@svgr/webpack'],
+                    as: '*.js',
+                },
+            },
+        },
+    },
+    images: {
+        formats: ['image/webp', 'image/avif'],
+        minimumCacheTTL: 31536000,
     },
 };
 

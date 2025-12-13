@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { ThumbsUp, ThumbsDown, Minus, Send, Loader, MessageSquare, Search } from "lucide-react";
+import { List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 
 interface Comment {
@@ -35,6 +37,25 @@ const detectSentiment = (text: string) => {
   return { sentiment, score, emotion };
 };
 
+const SkeletonLoader = () => (
+  <div className="space-y-3">
+    {[1, 2, 3, 4, 5].map((i) => (
+      <div key={i} className="p-4 rounded-xl border border-slate-800/50 bg-slate-900/20 animate-pulse">
+        <div className="flex items-start gap-4">
+          <div className="w-4 h-4 rounded bg-slate-800" />
+          <div className="flex-1">
+            <div className="h-4 bg-slate-800 rounded w-3/4 mb-3" />
+            <div className="flex gap-2">
+              <div className="h-4 bg-slate-800 rounded w-16" />
+              <div className="h-4 bg-slate-800 rounded w-24" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 export default function CommentsPage() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,11 +66,16 @@ export default function CommentsPage() {
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
-    fetch("/api/comments")
-      .then((res) => res.json())
-      .then((data) => { setComments(data.comments || []); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      setLoading(true);
+      fetch(`/api/comments?search=${encodeURIComponent(searchTerm)}`)
+        .then((res) => res.json())
+        .then((data) => { setComments(data.comments || []); setLoading(false); })
+        .catch(() => setLoading(false));
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
 
   const handleAnalyze = () => {
     if (!inputText.trim()) return;
@@ -58,9 +84,9 @@ export default function CommentsPage() {
   };
 
   const filteredComments = comments.filter((c) => {
-    const matchSearch = c.text.toLowerCase().includes(searchTerm.toLowerCase());
+    // Client-side sentiment filtering only (search is now server-side)
     const matchFilter = filter === "all" || c.sentiment === filter;
-    return matchSearch && matchFilter;
+    return matchFilter;
   });
 
   const getIcon = (s: string) => {
@@ -124,9 +150,9 @@ export default function CommentsPage() {
             </select>
           </div>
         </div>
-        {loading ? (<div className="text-center py-12 text-slate-500 animate-pulse">Loading comments dataset...</div>) : (
+        {loading ? (<SkeletonLoader />) : (
           <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-            {filteredComments.slice(0, 50).map((comment) => (
+            {filteredComments.map((comment) => (
               <div key={comment.id} className={`p-4 rounded-xl border transition-all hover:bg-slate-900/30 ${getColor(comment.sentiment)}`}>
                 <div className="flex items-start gap-4">
                   <div className="mt-1">{getIcon(comment.sentiment)}</div>

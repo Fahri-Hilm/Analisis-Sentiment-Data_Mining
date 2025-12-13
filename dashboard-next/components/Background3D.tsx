@@ -7,8 +7,8 @@ import * as random from "maath/random/dist/maath-random.esm"; // Create a type d
 
 function Stars(props: any) {
     const ref = useRef<any>();
-    // Generate 5000 points in a sphere
-    const sphere = useMemo(() => random.inSphere(new Float32Array(5000), { radius: 1.5 }), []);
+    // Optimized count: 2500 points (was 5000)
+    const sphere = useMemo(() => random.inSphere(new Float32Array(2500), { radius: 1.5 }), []);
 
     useFrame((state, delta) => {
         if (ref.current) {
@@ -34,8 +34,8 @@ function Stars(props: any) {
 
 function Connections() {
     const ref = useRef<any>();
-    // Generate fewer points for a "network" look
-    const sphere = useMemo(() => random.inSphere(new Float32Array(300), { radius: 1.2 }), []);
+    // Generate fewer points (150) for a "network" look
+    const sphere = useMemo(() => random.inSphere(new Float32Array(150), { radius: 1.2 }), []);
 
     useFrame((state, delta) => {
         if (ref.current) {
@@ -65,7 +65,7 @@ export default function Background3D() {
             <Canvas
                 camera={{ position: [0, 0, 1] }}
                 gl={{ antialias: true, alpha: true }}
-                dpr={[1, 2]} // Optimize for pixel ratio
+                dpr={[1, 1.5]} // Optimize for pixel ratio (cap at 1.5x)
             >
                 <Stars />
                 <Connections />

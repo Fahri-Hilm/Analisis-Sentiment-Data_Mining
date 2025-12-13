@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import { Download, Upload, Database, CheckCircle, Sparkles } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle, HardDrive, CheckCircle, Activity } from "lucide-react";
 
 import { useDashboardStats } from "@/hooks/useDashboardStats";
 
@@ -18,14 +18,14 @@ export default function DatasetPage() {
 
       <div className="mb-10 relative z-10">
         <h1 className="text-4xl font-bold flex items-center gap-3 bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-          <Database className="w-8 h-8 text-blue-400" />Dapur Data: Transparansi Dataset
+          <HardDrive className="w-8 h-8 text-blue-400" />Dapur Data: Transparansi Dataset
         </h1>
         <p className="text-slate-400 text-lg mt-2 font-light tracking-wide">Kelola dan validasi data latih untuk akurasi model</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 relative z-10">
         <div className="glass-card rounded-xl p-6 border border-blue-500/20">
-          <Database className="w-8 h-8 text-blue-400 mb-4" />
+          <HardDrive className="w-8 h-8 text-blue-400 mb-4" />
           <div className="text-sm text-slate-400 mb-1 uppercase tracking-wider font-medium">Total Records</div>
           <div className="text-3xl font-bold text-white font-mono tracking-tight">{stats.total?.toLocaleString()}</div>
           <div className="text-xs text-blue-400/80 mt-2 font-medium bg-blue-500/10 inline-block px-2 py-1 rounded-full">YouTube comments</div>
@@ -37,7 +37,7 @@ export default function DatasetPage() {
           <div className="text-xs text-green-400/80 mt-2 font-medium bg-green-500/10 inline-block px-2 py-1 rounded-full">ML Retrained (SVM)</div>
         </div>
         <div className="glass-card rounded-xl p-6 border border-purple-500/20">
-          <Sparkles className="w-8 h-8 text-purple-400 mb-4" />
+          <Activity className="w-8 h-8 text-purple-400 mb-4" />
           <div className="text-sm text-slate-400 mb-1 uppercase tracking-wider font-medium">Model Accuracy</div>
           <div className="text-3xl font-bold text-white font-mono tracking-tight">{stats.accuracy}%</div>
           <div className="text-xs text-purple-400/80 mt-2 font-medium bg-purple-500/10 inline-block px-2 py-1 rounded-full">F1 Score: {stats.f1Score}%</div>
@@ -89,15 +89,15 @@ export default function DatasetPage() {
         <h3 className="text-lg font-semibold mb-6 text-slate-200">Dataset Actions</h3>
         <div className="flex flex-wrap gap-4">
           <button className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-900/20 transition-all font-medium">
-            <Download className="w-5 h-5" />
+            <ArrowDownCircle className="w-5 h-5" />
             Export Dataset (CSV)
           </button>
           <button className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-lg shadow-emerald-900/20 transition-all font-medium">
-            <Download className="w-5 h-5" />
+            <ArrowDownCircle className="w-5 h-5" />
             Export Processed (JSON)
           </button>
           <button className="flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl shadow-lg shadow-purple-900/20 transition-all font-medium">
-            <Upload className="w-5 h-5" />
+            <ArrowUpCircle className="w-5 h-5" />
             Upload New Data
           </button>
         </div>

@@ -19,6 +19,7 @@ export function Sidebar() {
 
   const analysisItems = [
     { href: "/", icon: LayoutDashboard, label: "Dashboard" },
+    { href: "/analytics/advanced", icon: Zap, label: "Advanced Analytics" },
     { href: "/sentiment", icon: TrendingUp, label: "Sentiment Analysis" },
     { href: "/emotions", icon: Heart, label: "Emotion Insights" },
     { href: "/comments", icon: MessageSquare, label: "Comments Explorer" },
@@ -26,7 +27,7 @@ export function Sidebar() {
   ];
 
   const toolsItems = [
-    { href: "/analytics", icon: Zap, label: "Live Analyzer" },
+    { href: "/analytics", icon: Database, label: "Live Analyzer" },
     { href: "/dataset", icon: Database, label: "Dataset" },
     { href: "/docs", icon: FileText, label: "Documentation" },
   ];

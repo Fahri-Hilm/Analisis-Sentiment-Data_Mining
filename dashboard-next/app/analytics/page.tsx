@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from "recharts";
+import { PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { TrendingUp, Users, Target, Brain, Activity, PieChart as PieIcon } from "lucide-react";
+import { OptimizedEmotionChart, OptimizedTargetChart, OptimizedPieChart } from "@/components/OptimizedCharts";
 
-const EMOTION_COLORS = ["#f43f5e", "#8b5cf6", "#3b82f6", "#06b6d4", "#10b981", "#f59e0b"];
-const TARGET_COLORS = ["#6366f1", "#14b8a6", "#f97316", "#ec4899", "#84cc16"];
 const CONSTRUCT_COLORS = ["#22c55e", "#3b82f6", "#ef4444"];
 
 import { useDashboardStats } from "@/hooks/useDashboardStats";
@@ -15,15 +14,12 @@ export default function AnalyticsPage() {
 
   if (!stats) return (<div className="flex-1 flex items-center justify-center h-screen text-slate-400 bg-transparent">Memuat Data Analisis...</div>);
 
-  const emotionData = stats.topEmotions?.map((e: any, i: number) => ({ name: e.name, value: e.count, pct: parseFloat(e.percentage), fill: EMOTION_COLORS[i % 6] })) || [];
-  const targetData = stats.topTargets?.map((t: any, i: number) => ({ name: t.name, value: t.count, pct: parseFloat(t.percentage), fill: TARGET_COLORS[i % 5] })) || [];
   const sentimentData = [{ name: "Negatif", value: stats.negative, pct: parseFloat(stats.negativePercent), fill: "#ef4444" }, { name: "Positif", value: stats.positive, pct: parseFloat(stats.positivePercent), fill: "#22c55e" }, { name: "Netral", value: stats.neutral, pct: parseFloat(stats.neutralPercent), fill: "#6b7280" }];
   const constructData = stats.constructiveness?.map((c: any, i: number) => ({ name: c.name, value: c.count, pct: parseFloat(c.percentage), fill: CONSTRUCT_COLORS[i % 3] })) || [];
-  const radarData = emotionData.slice(0, 6).map((e: any) => ({ subject: e.name.split(" ")[0], value: e.pct }));
+  const radarData = stats.topEmotions?.slice(0, 6).map((e: any) => ({ subject: e.name.split(" ")[0], value: parseFloat(e.percentage) })) || [];
 
   return (
     <div className="max-w-7xl mx-auto p-8 relative">
-      {/* Background Ambient Glow */}
       <div className="absolute top-0 right-0 w-full h-[500px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2" />
 
       <div className="mb-10 relative z-10">
@@ -73,14 +69,14 @@ export default function AnalyticsPage() {
         </div>
         <div className="glass-card rounded-2xl p-6 border border-slate-800/50">
           <h3 className="text-lg font-semibold mb-6 flex items-center gap-2 text-slate-200"><Brain className="w-5 h-5 text-purple-400" />Distribusi Emosi</h3>
-          <div className="h-80"><ResponsiveContainer width="100%" height="100%"><BarChart data={emotionData} layout="vertical" margin={{ left: 10, right: 20 }}><CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} /><XAxis type="number" stroke="#64748b" fontSize={10} /><YAxis type="category" dataKey="name" stroke="#94a3b8" width={100} fontSize={11} tickLine={false} axisLine={false} /><Tooltip cursor={{ fill: '#1e293b', opacity: 0.4 }} contentStyle={{ backgroundColor: "#020617", border: "1px solid #1e293b", borderRadius: "12px" }} formatter={(v: number, n: string, p: any) => [v.toLocaleString() + " (" + p.payload.pct + "%)", ""]} itemStyle={{ color: '#fff' }} /><Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={24}>{emotionData.map((e: any, i: number) => <Cell key={i} fill={e.fill} />)}</Bar></BarChart></ResponsiveContainer></div>
+          <div className="h-80"><OptimizedEmotionChart data={stats.topEmotions} /></div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 relative z-10">
         <div className="glass-card rounded-2xl p-6 border border-slate-800/50">
           <h3 className="text-lg font-semibold mb-6 flex items-center gap-2 text-slate-200"><Target className="w-5 h-5 text-cyan-400" />Target Kritik</h3>
-          <div className="h-80"><ResponsiveContainer width="100%" height="100%"><BarChart data={targetData} margin={{ left: 10, right: 20, bottom: 30 }}><CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} /><XAxis dataKey="name" stroke="#94a3b8" fontSize={10} angle={-15} textAnchor="end" height={60} /><YAxis stroke="#64748b" fontSize={10} /><Tooltip cursor={{ fill: '#1e293b', opacity: 0.4 }} contentStyle={{ backgroundColor: "#020617", border: "1px solid #1e293b", borderRadius: "12px" }} formatter={(v: number, n: string, p: any) => [v.toLocaleString() + " (" + p.payload.pct + "%)", ""]} itemStyle={{ color: '#fff' }} /><Bar dataKey="value" radius={[6, 6, 0, 0]}>{targetData.map((t: any, i: number) => <Cell key={i} fill={t.fill} />)}</Bar></BarChart></ResponsiveContainer></div>
+          <div className="h-80"><OptimizedTargetChart data={stats.topTargets} /></div>
         </div>
         <div className="glass-card rounded-2xl p-6 border border-slate-800/50 flex flex-col justify-between">
           <div>

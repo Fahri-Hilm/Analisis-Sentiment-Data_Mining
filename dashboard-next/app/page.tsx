@@ -33,9 +33,10 @@ const SentimentPieChart = memo(function SentimentPieChart({ data }: { data: any[
         </Pie>
         <Tooltip
           contentStyle={{
-            backgroundColor: "#1e293b",
+            backgroundColor: "rgba(2, 6, 23, 0.95)",
             border: "1px solid #334155",
             borderRadius: "8px",
+            color: "#ffffff"
           }}
         />
       </PieChart>
@@ -45,7 +46,10 @@ const SentimentPieChart = memo(function SentimentPieChart({ data }: { data: any[
 
 const EmotionCard = memo(function EmotionCard({ emotion }: { emotion: any }) {
   return (
-    <div className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg">
+    <motion.div 
+      whileHover={{ scale: 1.02 }}
+      className="flex items-center justify-between p-3 bg-slate-800/30 rounded-lg hover:bg-slate-700/30 transition-colors"
+    >
       <div>
         <p className="font-medium">{emotion.name}</p>
         <p className="text-sm text-slate-400">{emotion.count.toLocaleString()} komentar</p>
@@ -53,7 +57,7 @@ const EmotionCard = memo(function EmotionCard({ emotion }: { emotion: any }) {
       <div className="text-right">
         <p className="text-lg font-bold text-blue-400">{emotion.percentage}%</p>
       </div>
-    </div>
+    </motion.div>
   );
 });
 
@@ -90,34 +94,42 @@ export default function Dashboard() {
             </>
           ) : (
             <>
-              <StatCard
-                icon={MessageSquare}
-                label="Total Komentar"
-                value={stats?.total.toLocaleString() || "0"}
-                change="+0%"
-                trend="up"
-              />
-              <StatCard
-                icon={TrendingUp}
-                label="Sentimen Positif"
-                value={stats?.positivePercent || "0%"}
-                change="+0%"
-                trend="up"
-              />
-              <StatCard
-                icon={TrendingDown}
-                label="Sentimen Negatif"
-                value={stats?.negativePercent || "0%"}
-                change="+0%"
-                trend="down"
-              />
-              <StatCard
-                icon={Activity}
-                label="Model Accuracy"
-                value={`${stats?.accuracy || 0}%`}
-                change="+0%"
-                trend="up"
-              />
+              <motion.div whileHover={{ scale: 1.02 }} className="glass-card rounded-2xl p-6 border border-slate-800/50">
+                <StatCard
+                  icon={MessageSquare}
+                  label="Total Komentar"
+                  value={stats?.total?.toLocaleString() || "0"}
+                  change="+0%"
+                  trend="up"
+                />
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} className="glass-card rounded-2xl p-6 border border-slate-800/50">
+                <StatCard
+                  icon={TrendingUp}
+                  label="Sentimen Positif"
+                  value={stats?.positivePercent || "0%"}
+                  change="+0%"
+                  trend="up"
+                />
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} className="glass-card rounded-2xl p-6 border border-slate-800/50">
+                <StatCard
+                  icon={TrendingDown}
+                  label="Sentimen Negatif"
+                  value={stats?.negativePercent || "0%"}
+                  change="+0%"
+                  trend="down"
+                />
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} className="glass-card rounded-2xl p-6 border border-slate-800/50">
+                <StatCard
+                  icon={Activity}
+                  label="Model Accuracy"
+                  value={`${stats?.accuracy || 0}%`}
+                  change="+0%"
+                  trend="up"
+                />
+              </motion.div>
             </>
           )}
         </div>
@@ -126,7 +138,7 @@ export default function Dashboard() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl p-6"
+            className="glass-card rounded-2xl p-6 border border-slate-800/50"
           >
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Target className="w-5 h-5 text-blue-400" />
@@ -162,7 +174,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl p-6"
+            className="glass-card rounded-2xl p-6 border border-slate-800/50"
           >
             <h2 className="text-xl font-semibold mb-4">Top 3 Emosi</h2>
             {loading ? (

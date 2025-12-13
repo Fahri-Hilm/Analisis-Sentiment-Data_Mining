@@ -22,7 +22,7 @@ export function AIInsights({ stats, loading }: AIInsightsProps) {
         const generateInsight = () => {
             const negative = parseFloat(stats.negativePercent);
             const positive = parseFloat(stats.positivePercent);
-            const total = stats.total.toLocaleString();
+            const total = stats.total?.toLocaleString() || "0";
             const dominantEmotion = stats.topEmotions?.[0]?.name || "unknown";
 
             let text = `Menganalisis ${total} data komentar... `;

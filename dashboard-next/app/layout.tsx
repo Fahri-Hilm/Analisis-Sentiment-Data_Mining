@@ -5,10 +5,10 @@ import { Sidebar } from "@/components/Sidebar";
 import dynamic from "next/dynamic";
 import { CommandCenter } from "@/components/CommandCenter";
 
-// Lazy load 3D background
-const Background3D = dynamic(() => import("@/components/Background3D"), {
+// Lazy load video background
+const VideoBackground = dynamic(() => import("@/components/VideoBackground").then(mod => ({ default: mod.VideoBackground })), {
   ssr: false,
-  loading: () => <div className="fixed inset-0 bg-[#020617] -z-10" />, // Placeholder
+  loading: () => <div className="fixed inset-0 bg-[#020617] -z-10" />,
 });
 
 // Configure font
@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`flex h-screen overflow-hidden bg-[#020617] text-slate-200 ${jetbrainsMono.variable}`}>
-        <Background3D />
+        <VideoBackground />
         <CommandCenter />
         <Sidebar />
         <main className="flex-1 overflow-y-auto relative z-10 ml-72">

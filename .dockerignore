@@ -1,0 +1,12 @@
+node_modules
+.git
+.venv
+__pycache__
+*.pyc
+.DS_Store
+.env.local
+.next
+notebooks
+*.ipynb
+README.md
+.gitignore

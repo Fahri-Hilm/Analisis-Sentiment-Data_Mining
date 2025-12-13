@@ -15,22 +15,12 @@ interface StatCardProps {
 export function StatCard({ icon: Icon, label, value, change, trend }: StatCardProps) {
   const [mounted, setMounted] = useState(false);
 
-  const numericValue = parseFloat(value.replace(/[^0-9.-]/g, ""));
-  const isPercentage = value.includes("%");
-  const decimals = isPercentage ? 1 : 0;
-
-  const { formattedValue } = useCountUp({
-    end: isNaN(numericValue) ? 0 : numericValue,
-    duration: 2000,
-    decimals: decimals,
-    suffix: isPercentage ? "%" : "",
-  });
-
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const displayValue = mounted && !isNaN(numericValue) ? formattedValue : value;
+  // Simply display the value as-is for now to ensure accuracy
+  const displayValue = mounted ? value : "0";
 
   return (
     <div className="elegant-card group overflow-hidden">
