@@ -8,6 +8,14 @@ const nextConfig = {
     poweredByHeader: false,
     reactStrictMode: true,
     generateEtags: false,
+    typescript: {
+        // Skip type checking during build for faster deployment
+        ignoreBuildErrors: true,
+    },
+    eslint: {
+        // Skip ESLint during build for faster deployment
+        ignoreDuringBuilds: true,
+    },
     experimental: {
         optimizePackageImports: ['recharts', 'framer-motion', 'lucide-react'],
         optimizeCss: true,

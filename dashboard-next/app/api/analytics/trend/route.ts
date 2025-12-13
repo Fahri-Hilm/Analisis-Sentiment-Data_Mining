@@ -49,7 +49,7 @@ export async function GET(request: Request) {
     }, {});
 
     // Convert to percentage and format for chart
-    const formattedData = Object.entries(trendData)
+    const formattedData = Object.entries(trendData as Record<string, any>)
       .sort(([a], [b]) => a.localeCompare(b))
       .map(([date, counts]: [string, any]) => ({
         date: formatDateLabel(date, period),
