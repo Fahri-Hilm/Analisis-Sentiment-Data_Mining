@@ -50,7 +50,7 @@ export async function GET(request: Request) {
     }, {});
 
     // Format for charts
-    const formattedData = Object.entries(targetStats)
+    const formattedData = Object.entries(targetStats as Record<string, any>)
       .map(([name, stats]: [string, any]) => ({
         name: formatTargetName(name),
         value: stats.total,
