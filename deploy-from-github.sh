@@ -10,6 +10,8 @@ if ! command -v docker &> /dev/null; then
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
     sudo usermod -aG docker $USER
+    echo "⚠️  Please logout and login again, then re-run this script"
+    exit 1
 fi
 
 # Install Docker Compose if not exists
@@ -32,13 +34,13 @@ fi
 
 # Build and run
 echo "🔨 Building and starting containers..."
-docker-compose down
-docker-compose build --no-cache
-docker-compose up -d
+sudo docker-compose down
+sudo docker-compose build --no-cache
+sudo docker-compose up -d
 
 echo "✅ Deployment complete!"
 echo "🌐 Dashboard: http://$(curl -s ifconfig.me)"
 echo "🔍 API: http://$(curl -s ifconfig.me)/api/predict"
 
 # Show logs
-docker-compose logs -f
+sudo docker-compose logs -f

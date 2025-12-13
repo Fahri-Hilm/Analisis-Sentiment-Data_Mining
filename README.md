@@ -28,19 +28,19 @@ Sistem analisis sentimen komprehensif untuk menganalisis opini publik Indonesia 
 | **🎯 Model Accuracy** | 89.4% | SVM with TF-IDF Vectorization |
 | **📈 F1-Score** | 91.0% | Balanced precision & recall |
 | **💯 Confidence** | 92.0% | High prediction reliability |
-| **🔴 Negative** | 69.8% (13,419) | Dominasi sentimen negatif |
-| **🟢 Positive** | 29.1% (5,597) | Sentimen positif/dukungan |
+| **🔴 Negative** | 69.8% (13,421) | Dominasi sentimen negatif |
+| **🟢 Positive** | 29.1% (5,595) | Sentimen positif/dukungan |
 | **⚪ Neutral** | 1.1% (212) | Komentar netral |
 
 ### 🎭 Emotion Distribution
 
 | Emosi | Count | Deskripsi |
 |-------|-------|-----------|
-| 😤 Kekecewaan | 8,547 | Kecewa terhadap performa |
-| 😠 Kemarahan | 6,002 | Marah dan frustrasi |
-| 🙏 Harapan & Tuntutan | 2,445 | Harapan masa depan + tuntutan perubahan |
-| 💪 Dukungan | 1,572 | Support untuk timnas |
-| 🎉 Kebanggaan | 662 | Bangga meski gagal |
+| 🎉 Kebanggaan | 9,057 | Bangga meski gagal |
+| 😠 Kemarahan | 4,970 | Marah dan frustrasi |
+| 🙏 Harapan & Tuntutan | 4,260 | Harapan masa depan + tuntutan perubahan |
+| 💪 Dukungan | 477 | Support untuk timnas |
+| 😤 Kekecewaan | 464 | Kecewa terhadap performa |
 
 ---
 
@@ -152,8 +152,8 @@ DM/
 
 | Class | Precision | Recall | F1-Score | Support |
 |-------|-----------|--------|----------|---------|
-| Negative | 0.91 | 0.95 | 0.93 | 13,419 |
-| Positive | 0.85 | 0.76 | 0.80 | 5,597 |
+| Negative | 0.91 | 0.95 | 0.93 | 13,421 |
+| Positive | 0.85 | 0.76 | 0.80 | 5,595 |
 | Neutral | 0.72 | 0.58 | 0.64 | 212 |
 | **Weighted Avg** | **0.89** | **0.89** | **0.91** | **19,228** |
 
@@ -224,8 +224,8 @@ Returns dashboard statistics from CSV data.
 {
   "total": 19228,
   "sentiment": {
-    "positive": 5597,
-    "negative": 13419,
+    "positive": 5595,
+    "negative": 13421,
     "neutral": 212
   },
   "emotions": [...],
@@ -255,9 +255,9 @@ Returns paginated comments with filters.
 ### Key Findings
 
 **Sentiment Distribution:**
-- 😊 Positive: 29.1% (5,597 comments)
+- 😊 Positive: 29.1% (5,595 comments)
 - 😐 Neutral: 1.1% (212 comments)
-- 😞 Negative: 69.8% (13,419 comments)
+- 😞 Negative: 69.8% (13,421 comments)
 
 **Top Sentiment Labels:**
 1. Kekecewaan (44.5%)

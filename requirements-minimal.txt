@@ -1,0 +1,11 @@
+# Minimal requirements for SVM sentiment analysis
+scikit-learn==1.8.0
+pandas==2.3.3
+numpy==1.26.4
+sastrawi==1.0.1
+nltk==3.9.2
+joblib==1.5.2
+
+# Optional visualization (can be removed for production)
+matplotlib==3.10.7
+seaborn==0.13.2
