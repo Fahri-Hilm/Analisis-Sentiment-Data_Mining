@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2025-12-14
+
+### Added
+- ✅ Enhanced deployment configuration with Docker multi-stage build
+- ✅ Production-ready deployment scripts (deploy.sh, setup-domain.sh)
+- ✅ VPS deployment automation with SSL support
+- ✅ Nginx configuration for production
+- ✅ Docker Compose setup for easy deployment
+- ✅ GitHub deployment automation
+- ✅ Performance optimization scripts
+- ✅ Enhanced error handling and logging
+
+### Improved
+- ✅ Dashboard performance optimization
+- ✅ Better responsive design
+- ✅ Enhanced data visualization
+- ✅ Improved model loading and caching
+- ✅ Better API error handling
+- ✅ Updated dependencies to latest versions
+
+### Fixed
+- ✅ Sentiment data labeling consistency
+- ✅ Model prediction accuracy improvements
+- ✅ Dashboard loading performance
+- ✅ API endpoint reliability
+
+### Deployment Features
+- **Docker**: Multi-stage build with optimized image size
+- **Scripts**: Automated deployment with domain setup
+- **SSL**: Automatic SSL certificate configuration
+- **Monitoring**: Health checks and logging
+- **Scaling**: Production-ready configuration
+
 ## [1.0.0] - 2025-12-07
 
 ### Added

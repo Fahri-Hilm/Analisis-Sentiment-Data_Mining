@@ -2,7 +2,7 @@
 
 Sistem analisis sentimen komprehensif untuk menganalisis opini publik Indonesia terhadap kegagalan Timnas lolos Piala Dunia 2026 melalui komentar YouTube. Project ini menggabungkan Machine Learning (SVM + TF-IDF) dengan Dashboard Modern Next.js untuk visualisasi data yang interaktif dan informatif.
 
-**Version:** 1.0 | **Status:** Production Ready ✅ | **Accuracy:** 89.4% 🎯
+**Version:** 2.0 | **Status:** Production Ready ✅ | **Accuracy:** 89.4% 🎯 | **Updated:** Dec 2025
 
 <div align="center">
 
@@ -247,6 +247,43 @@ Returns paginated comments with filters.
 - `limit` - Items per page (default: 20)
 - `sentiment` - Filter by sentiment
 - `search` - Search in comment text
+
+---
+
+## 🚀 Deployment
+
+### Docker Deployment
+
+```bash
+# Build and run with Docker
+docker build -t sentiment-analysis .
+docker run -p 3000:3000 -p 5000:5000 sentiment-analysis
+```
+
+### Production Deployment
+
+```bash
+# Quick deployment script
+chmod +x deploy.sh
+./deploy.sh
+
+# Or manual deployment
+cd dashboard-next
+npm run build
+npm start
+```
+
+### VPS Deployment
+
+```bash
+# Setup domain and SSL
+chmod +x setup-domain.sh
+./setup-domain.sh
+
+# Deploy from GitHub
+chmod +x deploy-from-github.sh
+./deploy-from-github.sh
+```
 
 ---
 
