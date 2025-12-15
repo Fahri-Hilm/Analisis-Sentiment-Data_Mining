@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google"; // Import font
 import "./globals.css";
 import { Sidebar } from "@/components/Sidebar";
+import { Header } from "@/components/Header";
 import dynamic from "next/dynamic";
 import { CommandCenter } from "@/components/CommandCenter";
+import { StreamProvider } from "@/contexts/StreamContext";
 
 // Lazy load video background
 const VideoBackground = dynamic(() => import("@/components/VideoBackground").then(mod => ({ default: mod.VideoBackground })), {
@@ -30,12 +32,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`flex h-screen overflow-hidden bg-[#020617] text-slate-200 ${jetbrainsMono.variable}`}>
-        <VideoBackground />
-        <CommandCenter />
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto relative z-10 ml-72">
-          {children}
-        </main>
+        <StreamProvider>
+          <VideoBackground />
+          <CommandCenter />
+          <Sidebar />
+          <div className="flex-1 flex flex-col ml-72">
+            <Header />
+            <main className="flex-1 overflow-y-auto relative z-10">
+              {children}
+            </main>
+          </div>
+        </StreamProvider>
       </body>
     </html>
   );

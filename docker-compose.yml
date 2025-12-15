@@ -1,18 +1,45 @@
+version: '3.8'
+
 services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: sentiment_db
+    env_file: .env.production
+    environment:
+      POSTGRES_DB: sentiment_analysis
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d sentiment_analysis"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Main Application
   sentiment-app:
     build: .
+    container_name: sentiment_app
+    env_file: .env.production
     ports:
       - "3000:3000"
       - "5000:5000"
-    environment:
-      - NODE_ENV=production
     restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - ./data:/app/data:ro
       - ./data/models:/app/models:ro
 
+  # Nginx Reverse Proxy
   nginx:
     image: nginx:alpine
+    container_name: sentiment_nginx
     ports:
       - "80:80"
     volumes:
@@ -20,3 +47,6 @@ services:
     depends_on:
       - sentiment-app
     restart: unless-stopped
+
+volumes:
+  postgres_data:

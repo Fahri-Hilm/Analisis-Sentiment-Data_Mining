@@ -26,6 +26,12 @@ export function Sidebar() {
     { href: "/model", icon: Activity, label: "Model Performance" },
   ];
 
+  const realtimeItems = [
+    { href: "/realtime", icon: Activity, label: "Live Analysis" },
+    { href: "/live-comments", icon: MessageSquare, label: "Real YouTube Comments" },
+    { href: "/realtime/settings", icon: Settings, label: "Stream Settings" },
+  ];
+
   const toolsItems = [
     { href: "/analytics", icon: Database, label: "Live Analyzer" },
     { href: "/dataset", icon: Database, label: "Dataset" },
@@ -70,9 +76,18 @@ export function Sidebar() {
 
       <div className="flex-1 overflow-y-auto py-2 space-y-8 no-scrollbar">
         <div>
-          <div className="px-6 mb-3 text-xs font-semibold text-slate-500 uppercase tracking-widest font-mono">Analysis</div>
+          <div className="px-6 mb-3 text-xs font-semibold text-slate-500 uppercase tracking-widest font-mono">📊 Static Analysis</div>
           <nav className="flex flex-col space-y-1">
             {analysisItems.map((item) => (
+              <NavItem key={item.href} item={item} />
+            ))}
+          </nav>
+        </div>
+
+        <div>
+          <div className="px-6 mb-3 text-xs font-semibold text-red-400 uppercase tracking-widest font-mono">🔴 Live Analysis</div>
+          <nav className="flex flex-col space-y-1">
+            {realtimeItems.map((item) => (
               <NavItem key={item.href} item={item} />
             ))}
           </nav>
