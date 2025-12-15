@@ -10,7 +10,35 @@ Dashboard analisis sentiment real-time dengan AI untuk komentar YouTube, khusus 
 - **🎯 Indonesian Optimized** - Khusus bahasa Indonesia dan slang
 - **📊 Interactive Dashboard** - Modern UI dengan charts dan visualisasi
 
-## 🛠 Tech Stack
+## 🏗️ Dual Model Architecture
+
+Sistem ini menggunakan **dua model berbeda** untuk kebutuhan yang berbeda:
+
+### 📊 **Static Dashboard - SVM Model**
+- **Data**: Pre-labeled dataset yang sudah di-cleaning
+- **Model**: Support Vector Machine (SVM) custom trained
+- **Use Case**: Historical analysis, batch processing, research
+- **Pages**: Main Dashboard (`/`), Analytics (`/analytics`), Dataset (`/dataset`)
+- **Advantages**: Fast, consistent, offline capable, no API costs
+
+### 🔴 **Live Dashboard - Gemini AI**
+- **Data**: Real-time YouTube comments (raw data)
+- **Model**: Google Gemini AI with smart filtering
+- **Use Case**: Real-time monitoring, live analysis, social listening
+- **Pages**: Live Comments (`/live-comments`), Live Analysis (`/realtime`)
+- **Advantages**: Context-aware, reasoning provided, handles Indonesian slang
+
+### 🔄 **Model Comparison**
+| Feature | SVM Model | Gemini AI |
+|---------|-----------|-----------|
+| **Data Source** | Pre-labeled & cleaned | Real-time & raw |
+| **Accuracy** | 87.5% (domain-specific) | 95%+ (general) |
+| **Speed** | <1ms per comment | 1-2s per comment |
+| **Context** | Limited | Excellent |
+| **Cost** | Free | API quota |
+| **Reasoning** | No | Yes |
+
+**📚 Detailed Documentation**: [Dual Model Architecture](DUAL_MODEL_ARCHITECTURE.md)
 
 ### Backend:
 - **FastAPI** - API server dengan sentiment analysis

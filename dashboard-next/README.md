@@ -2,7 +2,25 @@
 
 Advanced Next.js dashboard dengan AI sentiment analysis dan smart comment filtering untuk analisis real-time komentar YouTube.
 
-## ✨ Latest Features (v5.0)
+## 🔄 Model Architecture
+
+Dashboard ini menggunakan **dual model system**:
+
+### 📊 **Static Pages (SVM Model)**
+- **Main Dashboard** (`/`) - Uses pre-trained SVM on labeled data
+- **Analytics** (`/analytics`) - Historical analysis with SVM
+- **Dataset** (`/dataset`) - Processed data visualization
+- **Model Performance** (`/model`) - SVM training metrics
+
+### 🔴 **Live Pages (Gemini AI)**
+- **Live Comments** (`/live-comments`) - Real-time AI analysis
+- **Live Analysis** (`/realtime`) - Stream monitoring with AI
+- **Real-time APIs** - Gemini AI integration
+
+### 🎯 **Why Dual Models?**
+- **SVM**: Perfect for historical, cleaned data analysis
+- **Gemini AI**: Ideal for real-time, contextual understanding
+- **Complementary**: Each model serves different use cases optimally
 
 - **🤖 Aggressive AI Analysis** - 96% reduction in neutral results
 - **🔍 Smart Comment Filter** - AI selects relevant comments only
