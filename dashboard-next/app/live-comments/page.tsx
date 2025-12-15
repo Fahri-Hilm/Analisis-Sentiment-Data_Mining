@@ -16,6 +16,8 @@ interface LiveComment {
   confidence?: number;
   reasoning?: string;
   model?: string;
+  relevanceScore?: number;
+  filterReason?: string;
 }
 
 export default function LiveCommentsPage() {
@@ -25,16 +27,19 @@ export default function LiveCommentsPage() {
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const [aiEnabled, setAiEnabled] = useState(true);
   const [filterEnabled, setFilterEnabled] = useState(true);
+  const [maxComments, setMaxComments] = useState(200);
+  const [totalFetched, setTotalFetched] = useState(0);
 
   const fetchLiveComments = async () => {
     setLoading(true);
     try {
-      const url = `/api/live-comments?videoId=${videoId}${aiEnabled ? '&sentiment=true' : ''}${filterEnabled ? '&filter=true' : '&filter=false'}`;
+      const url = `/api/live-comments?videoId=${videoId}&maxResults=${maxComments}${aiEnabled ? '&sentiment=true' : ''}${filterEnabled ? '&filter=true' : '&filter=false'}`;
       const response = await fetch(url);
       const data = await response.json();
       
       if (data.comments) {
         setComments(data.comments);
+        setTotalFetched(data.totalFetched || data.total);
         setLastUpdate(new Date().toLocaleTimeString());
       }
     } catch (error) {
@@ -46,7 +51,7 @@ export default function LiveCommentsPage() {
 
   useEffect(() => {
     fetchLiveComments();
-  }, [videoId, aiEnabled, filterEnabled]);
+  }, [videoId, aiEnabled, filterEnabled, maxComments]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString('id-ID');
@@ -89,6 +94,16 @@ export default function LiveCommentsPage() {
             placeholder="YouTube Video ID"
             className="flex-1 bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white"
           />
+          <select
+            value={maxComments}
+            onChange={(e) => setMaxComments(parseInt(e.target.value))}
+            className="bg-slate-900/50 border border-slate-700/50 rounded-xl px-4 py-3 text-white"
+          >
+            <option value={100}>100 Comments</option>
+            <option value={200}>200 Comments</option>
+            <option value={500}>500 Comments</option>
+            <option value={1000}>1000 Comments</option>
+          </select>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <input
@@ -117,18 +132,29 @@ export default function LiveCommentsPage() {
               </label>
             </div>
             <button
-            onClick={fetchLiveComments}
-            disabled={loading}
-            className="px-6 py-3 bg-red-600 hover:bg-red-500 disabled:bg-slate-700 text-white rounded-xl flex items-center gap-2 transition-all"
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            {loading ? 'Loading...' : 'Refresh'}
-          </button>
+              onClick={fetchLiveComments}
+              disabled={loading}
+              className="px-6 py-3 bg-red-600 hover:bg-red-500 disabled:bg-slate-700 text-white rounded-xl flex items-center gap-2 transition-all"
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+              {loading ? 'Loading...' : 'Refresh'}
+            </button>
+          </div>
         </div>
         
         {lastUpdate && (
           <div className="flex items-center justify-between text-sm text-slate-400">
-            <span>Last updated: {lastUpdate} • {comments.length} comments loaded</span>
+            <div className="flex items-center gap-4">
+              <span>Last updated: {lastUpdate}</span>
+              <span className="text-slate-500">•</span>
+              <span className="text-green-400">{comments.length} relevant comments</span>
+              {totalFetched > comments.length && (
+                <>
+                  <span className="text-slate-500">•</span>
+                  <span className="text-slate-500">{totalFetched} total fetched</span>
+                </>
+              )}
+            </div>
             <div className="flex items-center gap-4">
               {aiEnabled && (
                 <span className="flex items-center gap-1 text-blue-400">
@@ -171,10 +197,23 @@ export default function LiveCommentsPage() {
                       <User className="w-4 h-4 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-200">{comment.author}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-slate-200">{comment.author}</p>
+                        {comment.relevanceScore && (
+                          <span className="px-2 py-1 text-xs bg-green-500/20 text-green-400 rounded-full border border-green-500/30">
+                            Score: {comment.relevanceScore}
+                          </span>
+                        )}
+                      </div>
                       <div className="flex items-center gap-2 text-xs text-slate-400">
                         <Clock className="w-3 h-3" />
                         {formatDate(comment.publishedAt)}
+                        {comment.filterReason && (
+                          <>
+                            <span>•</span>
+                            <span className="text-green-400">{comment.filterReason}</span>
+                          </>
+                        )}
                         {comment.likeCount > 0 && (
                           <>
                             <span>•</span>

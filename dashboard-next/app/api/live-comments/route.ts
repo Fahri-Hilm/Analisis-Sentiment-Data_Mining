@@ -3,61 +3,142 @@ import { NextResponse } from "next/server";
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 const GEMINI_API_URL = "http://localhost:8000";
 
-// Fallback sentiment analysis
+// Enhanced fallback sentiment analysis with unified patterns
 function analyzeSentimentFallback(text: string) {
-  const positiveWords = ['bagus', 'mantap', 'keren', 'suka', 'senang', 'puas', 'recommended', 'excellent', 'good', 'great'];
-  const negativeWords = ['jelek', 'buruk', 'kecewa', 'parah', 'benci', 'marah', 'tidak suka', 'mengecewakan', 'bad', 'terrible'];
+  // Unified lexicon for consistent fallback scoring
+  const sentimentLexicon = {
+    positive: {
+      strong: ['sangat bagus', 'luar biasa', 'excellent', 'fantastic', 'amazing', 'perfect', 'mantap sekali', 'keren banget', 'hebat sekali'],
+      medium: ['bagus', 'mantap', 'keren', 'hebat', 'good', 'great', 'nice', 'puas', 'senang', 'suka', 'bangga', 'juara', 'menang', 'gol', 'sukses'],
+      weak: ['lumayan', 'cukup', 'ok', 'okay', 'fine', 'baik', 'bisa', 'tidak buruk']
+    },
+    negative: {
+      strong: ['sangat jelek', 'sangat buruk', 'terrible', 'awful', 'horrible', 'kecewa sekali', 'marah sekali', 'payah banget', 'parah banget'],
+      medium: ['jelek', 'buruk', 'kecewa', 'gagal', 'payah', 'lemah', 'bad', 'marah', 'benci', 'kalah', 'mengecewakan', 'tidak suka'],
+      weak: ['kurang', 'tidak', 'bukan', 'gak', 'ga', 'nggak', 'salah', 'minus']
+    }
+  };
   
   const lowerText = text.toLowerCase();
-  const posCount = positiveWords.filter(word => lowerText.includes(word)).length;
-  const negCount = negativeWords.filter(word => lowerText.includes(word)).length;
+  let positiveScore = 0;
+  let negativeScore = 0;
   
-  if (posCount > negCount) return { sentiment: 'positive', confidence: 0.7 };
-  if (negCount > posCount) return { sentiment: 'negative', confidence: 0.7 };
-  return { sentiment: 'neutral', confidence: 0.6 };
+  // Calculate scores with weights
+  Object.entries(sentimentLexicon.positive).forEach(([strength, words]) => {
+    const weight = strength === 'strong' ? 3 : strength === 'medium' ? 2 : 1;
+    words.forEach(word => {
+      if (lowerText.includes(word)) positiveScore += weight;
+    });
+  });
+  
+  Object.entries(sentimentLexicon.negative).forEach(([strength, words]) => {
+    const weight = strength === 'strong' ? 3 : strength === 'medium' ? 2 : 1;
+    words.forEach(word => {
+      if (lowerText.includes(word)) negativeScore += weight;
+    });
+  });
+  
+  // Apply unified thresholds
+  const totalScore = positiveScore + negativeScore;
+  if (totalScore === 0) {
+    return { sentiment: 'neutral', confidence: 0.65 };
+  }
+  
+  const posRatio = positiveScore / totalScore;
+  const negRatio = negativeScore / totalScore;
+  
+  // Unified decision thresholds
+  if (posRatio >= 0.35 && posRatio > negRatio) {
+    return { 
+      sentiment: 'positive', 
+      confidence: Math.min(0.95, 0.6 + posRatio * 0.3)
+    };
+  } else if (negRatio >= 0.35 && negRatio > posRatio) {
+    return { 
+      sentiment: 'negative', 
+      confidence: Math.min(0.95, 0.6 + negRatio * 0.3)
+    };
+  } else {
+    return { sentiment: 'neutral', confidence: 0.65 };
+  }
 }
 
-// Filter comments for relevance
+// Enhanced filtering system
 async function filterRelevantComments(comments: any[]) {
   const relevantComments = [];
   
   for (const comment of comments) {
     const text = comment.text.toLowerCase();
+    const originalText = comment.text;
     
-    // Quick relevance check
+    // Enhanced football keywords
     const footballKeywords = [
-      'timnas', 'indonesia', 'sepak bola', 'football', 'soccer',
+      'timnas', 'indonesia', 'sepak bola', 'football', 'soccer', 'bola',
       'pemain', 'player', 'pelatih', 'coach', 'pertandingan', 'match',
-      'gol', 'goal', 'menang', 'kalah', 'win', 'lose', 'juara'
+      'gol', 'goal', 'menang', 'kalah', 'win', 'lose', 'juara', 'champion',
+      'garuda', 'merah putih', 'pssi', 'aff', 'piala dunia', 'world cup',
+      'shin tae-yong', 'sty', 'egy', 'witan', 'pratama', 'arhan',
+      'elkan', 'baggott', 'jordi', 'asnawi', 'rizky ridho', 'marselino',
+      'tactic', 'taktik', 'formasi', 'formation', 'strategy', 'strategi'
     ];
     
+    // Enhanced spam detection
     const spamKeywords = [
-      'subscribe', 'like and subscribe', 'follow me', 'check out',
-      'promo', 'diskon', 'murah', 'http', 'www', '.com'
+      'subscribe', 'like and subscribe', 'follow me', 'check out', 'link bio',
+      'promo', 'diskon', 'murah', 'http', 'www', '.com', '.id', 'wa.me',
+      'jual', 'beli', 'order', 'dm', 'chat', 'whatsapp', 'telegram',
+      'first', 'pertamax', 'komen pertama', 'pin dong', 'pin please'
     ];
     
-    // Filter logic
+    // Quality checks
     const hasFootballContext = footballKeywords.some(keyword => text.includes(keyword));
     const isSpam = spamKeywords.some(spam => text.includes(spam));
-    const isTooShort = comment.text.trim().length < 10;
-    const isJustEmojis = comment.text.length < 5 || comment.text.replace(/[a-zA-Z0-9\s]/g, '').length > comment.text.length * 0.5;
+    const isTooShort = originalText.trim().length < 8;
+    const isJustEmojis = originalText.replace(/[\w\s]/g, '').length > originalText.length * 0.6;
+    const hasRepeatedChars = /(.)\1{4,}/.test(originalText); // 5+ repeated chars
+    const isAllCaps = originalText.length > 10 && originalText === originalText.toUpperCase();
     
-    // Include if relevant
-    if (!isSpam && !isTooShort && !isJustEmojis && (hasFootballContext || comment.text.length > 20)) {
+    // Opinion indicators
+    const opinionWords = [
+      'bagus', 'jelek', 'keren', 'mantap', 'parah', 'buruk', 'suka', 'benci',
+      'setuju', 'tidak setuju', 'harusnya', 'seharusnya', 'kenapa', 'mengapa',
+      'good', 'bad', 'great', 'terrible', 'should', 'why', 'how'
+    ];
+    const hasOpinion = opinionWords.some(word => text.includes(word));
+    
+    // Scoring system
+    let relevanceScore = 0;
+    if (hasFootballContext) relevanceScore += 3;
+    if (hasOpinion) relevanceScore += 2;
+    if (originalText.length > 30) relevanceScore += 1;
+    if (originalText.includes('?')) relevanceScore += 1; // Questions often relevant
+    
+    // Penalty system
+    if (isSpam) relevanceScore -= 5;
+    if (isTooShort) relevanceScore -= 2;
+    if (isJustEmojis) relevanceScore -= 3;
+    if (hasRepeatedChars) relevanceScore -= 2;
+    if (isAllCaps) relevanceScore -= 1;
+    
+    // Include if score is positive
+    if (relevanceScore > 0) {
       relevantComments.push({
         ...comment,
-        filterReason: hasFootballContext ? 'Football context' : 'General opinion'
+        relevanceScore,
+        filterReason: hasFootballContext ? 'Football context' : 
+                     hasOpinion ? 'Opinion detected' : 'General relevance'
       });
     }
   }
   
-  return relevantComments;
+  // Sort by relevance score (highest first)
+  return relevantComments.sort((a, b) => b.relevanceScore - a.relevanceScore);
 }
 
-// Analyze sentiment with Gemini AI
-async function analyzeSentimentWithGemini(text: string) {
+// Analyze sentiment with Unified Scoring System
+async function analyzeSentimentWithUnified(text: string) {
   try {
-    console.log(`🤖 Analyzing with Gemini: "${text.substring(0, 50)}..."`);
+    console.log(`🎯 Analyzing with Unified Scorer: "${text.substring(0, 50)}..."`);
     
     const response = await fetch(`${GEMINI_API_URL}/predict`, {
       method: "POST",
@@ -65,32 +146,36 @@ async function analyzeSentimentWithGemini(text: string) {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ 
+        text,
+        model_type: "realtime"  // Use realtime model behavior for live comments
+      }),
       signal: AbortSignal.timeout(10000)
     });
 
     if (response.ok) {
       const result = await response.json();
-      console.log(`✅ Gemini result: ${result.sentiment} (${result.confidence})`);
+      console.log(`✅ Unified Scorer result: ${result.sentiment} (${result.confidence})`);
       return {
         sentiment: result.sentiment,
         confidence: result.confidence,
         reasoning: result.reasoning,
-        model: "Aggressive AI"
+        model: "Unified-Realtime",
+        scores: result.scores
       };
     } else {
-      console.log(`❌ Gemini API error: ${response.status}`);
+      console.log(`❌ Unified Scorer API error: ${response.status}`);
     }
   } catch (error) {
-    console.log(`⚠️ Gemini API unavailable: ${error}`);
+    console.log(`⚠️ Unified Scorer API unavailable: ${error}`);
   }
   
-  // Fallback
+  // Enhanced fallback with consistent scoring
   const fallback = analyzeSentimentFallback(text);
   return {
     ...fallback,
-    reasoning: "Rule-based analysis (AI unavailable)",
-    model: "Fallback"
+    reasoning: "Enhanced fallback analysis (Unified Scorer unavailable)",
+    model: "Unified-Fallback"
   };
 }
 
@@ -100,41 +185,67 @@ export async function GET(req: Request) {
     const videoId = searchParams.get("videoId") || "lDtSjKb_8Jo";
     const analyzeSentiment = searchParams.get("sentiment") === "true";
     const filterRelevant = searchParams.get("filter") !== "false"; // Default to true
+    const maxResults = parseInt(searchParams.get("maxResults") || "200"); // Increased default
     
     if (!YOUTUBE_API_KEY) {
       return NextResponse.json({ error: "YouTube API key not configured" }, { status: 500 });
     }
 
-    const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}&maxResults=50&order=time&key=${YOUTUBE_API_KEY}`
-    );
+    // Fetch multiple pages to get more comments
+    let allComments: any[] = [];
+    let nextPageToken = "";
+    let fetchCount = 0;
+    const maxFetches = Math.ceil(maxResults / 50); // YouTube API max per request is 50
 
-    if (!response.ok) {
-      throw new Error(`YouTube API error: ${response.status}`);
-    }
+    do {
+      const url = `https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${videoId}&maxResults=50&order=time&key=${YOUTUBE_API_KEY}${nextPageToken ? `&pageToken=${nextPageToken}` : ''}`;
+      
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        if (fetchCount === 0) {
+          throw new Error(`YouTube API error: ${response.status}`);
+        }
+        break; // If not first request, just break and use what we have
+      }
 
-    const data = await response.json();
-    
-    let comments = data.items?.map((item: any) => {
-      const snippet = item.snippet.topLevelComment.snippet;
-      return {
-        id: item.id,
-        text: snippet.textDisplay,
-        author: snippet.authorDisplayName,
-        authorChannelId: snippet.authorChannelId?.value,
-        likeCount: snippet.likeCount,
-        publishedAt: snippet.publishedAt,
-        updatedAt: snippet.updatedAt,
-        isReal: true
-      };
-    }) || [];
+      const data = await response.json();
+      
+      const pageComments = data.items?.map((item: any) => {
+        const snippet = item.snippet.topLevelComment.snippet;
+        return {
+          id: item.id,
+          text: snippet.textDisplay,
+          author: snippet.authorDisplayName,
+          authorChannelId: snippet.authorChannelId?.value,
+          likeCount: snippet.likeCount,
+          publishedAt: snippet.publishedAt,
+          updatedAt: snippet.updatedAt,
+          isReal: true
+        };
+      }) || [];
 
-    console.log(`📥 Fetched ${comments.length} raw comments`);
+      allComments = [...allComments, ...pageComments];
+      nextPageToken = data.nextPageToken || "";
+      fetchCount++;
+      
+      // Stop if we have enough comments or no more pages
+      if (allComments.length >= maxResults || !nextPageToken || fetchCount >= maxFetches) {
+        break;
+      }
+      
+    } while (nextPageToken && fetchCount < maxFetches);
+
+    console.log(`📥 Fetched ${allComments.length} raw comments from ${fetchCount} API calls`);
+
+    // Trim to requested amount
+    let comments = allComments.slice(0, maxResults);
 
     // Filter for relevant comments
     if (filterRelevant) {
+      const beforeFilter = comments.length;
       comments = await filterRelevantComments(comments);
-      console.log(`🔍 Filtered to ${comments.length} relevant comments`);
+      console.log(`🔍 Filtered from ${beforeFilter} to ${comments.length} relevant comments`);
     }
 
     // Add sentiment analysis if requested
@@ -142,13 +253,14 @@ export async function GET(req: Request) {
       console.log(`🤖 Analyzing sentiment for ${comments.length} comments...`);
       
       const sentimentPromises = comments.map(async (comment) => {
-        const sentimentData = await analyzeSentimentWithGemini(comment.text);
+        const sentimentData = await analyzeSentimentWithUnified(comment.text);
         return {
           ...comment,
           sentiment: sentimentData.sentiment,
           confidence: sentimentData.confidence,
           reasoning: sentimentData.reasoning,
-          model: sentimentData.model
+          model: sentimentData.model,
+          scores: sentimentData.scores
         };
       });
 
@@ -163,9 +275,11 @@ export async function GET(req: Request) {
       return NextResponse.json({ 
         comments,
         total: comments.length,
+        totalFetched: allComments.length,
         videoId,
         isLive: true,
         filtered: filterRelevant,
+        maxResults,
         sentimentAnalysis: {
           enabled: true,
           model: comments[0]?.model || "Mixed",
@@ -178,9 +292,11 @@ export async function GET(req: Request) {
     return NextResponse.json({ 
       comments,
       total: comments.length,
+      totalFetched: allComments.length,
       videoId,
       isLive: true,
       filtered: filterRelevant,
+      maxResults,
       sentimentAnalysis: { enabled: false }
     });
 
