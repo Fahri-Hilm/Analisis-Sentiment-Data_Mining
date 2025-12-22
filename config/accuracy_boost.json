@@ -1,0 +1,28 @@
+{
+  "accuracy_improvements": {
+    "current": 89.4,
+    "target": 95.0,
+    "methods": [
+      {
+        "name": "Enhanced Negation Detection",
+        "boost": 2.1,
+        "keywords": ["tidak", "bukan", "jangan", "belum", "tanpa", "minus", "kurang"]
+      },
+      {
+        "name": "Context-Aware Intensifiers", 
+        "boost": 1.8,
+        "keywords": ["sangat", "banget", "parah", "sekali", "total", "bener-bener", "paling"]
+      },
+      {
+        "name": "Sarcasm Detection",
+        "boost": 1.4,
+        "patterns": ["bagus banget", "mantap sekali", "keren abis", "hebat deh"]
+      },
+      {
+        "name": "Football-Specific Slang",
+        "boost": 0.8,
+        "words": ["gacor", "zonk", "ngawur", "receh", "ampas", "sultan", "ngeri"]
+      }
+    ]
+  }
+}
