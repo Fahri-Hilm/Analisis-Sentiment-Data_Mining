@@ -132,7 +132,7 @@ export default function Dashboard() {
                 {stats?.backendConnected && (
                   <div className="mt-2 text-xs text-green-400 flex items-center gap-1">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    Backend Connected ({stats.backendInfo?.lexicon_words} words)
+                    Lexicon Processed ({stats.backendInfo?.processed_samples} samples → {stats.backendInfo?.csv_comments?.toLocaleString()})
                   </div>
                 )}
               </motion.div>
