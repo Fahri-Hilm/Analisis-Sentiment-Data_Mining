@@ -135,46 +135,49 @@ async function filterRelevantComments(comments: any[]) {
   return relevantComments.sort((a, b) => b.relevanceScore - a.relevanceScore);
 }
 
-// Analyze sentiment with Unified Scoring System
+// Analyze sentiment with Multi-Layer Backend
 async function analyzeSentimentWithUnified(text: string) {
   try {
-    console.log(`🎯 Analyzing with Unified Scorer: "${text.substring(0, 50)}..."`);
+    console.log(`🎯 Analyzing with Multi-Layer Backend: "${text.substring(0, 50)}..."`);
     
-    const response = await fetch(`${GEMINI_API_URL}/predict`, {
+    const response = await fetch(`${GEMINI_API_URL}/analyze`, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify({ 
-        text,
-        model_type: "realtime"  // Use realtime model behavior for live comments
-      }),
+      body: JSON.stringify({ text }),
       signal: AbortSignal.timeout(10000)
     });
 
     if (response.ok) {
       const result = await response.json();
-      console.log(`✅ Unified Scorer result: ${result.sentiment} (${result.confidence})`);
+      console.log(`✅ Multi-Layer result: ${result.summary.dominant_sentiment} (${result.layer1_result.confidence})`);
+      
       return {
-        sentiment: result.sentiment,
-        confidence: result.confidence,
-        reasoning: result.reasoning,
-        model: "Unified-Realtime",
-        scores: result.scores
+        sentiment: result.summary.dominant_sentiment,
+        confidence: result.layer1_result.confidence,
+        reasoning: `Layer 1: ${result.layer1_result.sentiment} | Layer 2: ${result.layer2_result.primary_emotion} | Layer 3: ${result.layer3_result.primary_emotion}`,
+        model: "Multi-Layer-Backend",
+        layers: {
+          layer1: result.layer1_result,
+          layer2: result.layer2_result, 
+          layer3: result.layer3_result
+        },
+        coverage: result.summary.total_coverage
       };
     } else {
-      console.log(`❌ Unified Scorer API error: ${response.status}`);
+      console.log(`❌ Multi-Layer Backend API error: ${response.status}`);
     }
   } catch (error) {
-    console.log(`⚠️ Unified Scorer API unavailable: ${error}`);
+    console.log(`⚠️ Multi-Layer Backend unavailable: ${error}`);
   }
   
   // Enhanced fallback with consistent scoring
   const fallback = analyzeSentimentFallback(text);
   return {
     ...fallback,
-    reasoning: "Enhanced fallback analysis (Unified Scorer unavailable)",
+    reasoning: "Enhanced fallback analysis (Multi-Layer Backend unavailable)",
     model: "Unified-Fallback"
   };
 }
@@ -282,9 +285,15 @@ export async function GET(req: Request) {
         maxResults,
         sentimentAnalysis: {
           enabled: true,
-          model: comments[0]?.model || "Mixed",
+          model: comments[0]?.model || "Multi-Layer-Backend",
           summary: sentimentCounts,
-          avgConfidence: comments.reduce((sum, c) => sum + (c.confidence || 0), 0) / comments.length
+          avgConfidence: comments.reduce((sum, c) => sum + (c.confidence || 0), 0) / comments.length,
+          layerInfo: {
+            layer1: "Core Sentiment (1,500 words)",
+            layer2: "Basic Emotions (2,000 words)", 
+            layer3: "Football-Specific (3,000 words)",
+            totalWords: 6500
+          }
         }
       });
     }

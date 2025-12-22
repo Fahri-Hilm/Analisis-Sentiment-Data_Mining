@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { ArrowDownCircle, ArrowUpCircle, HardDrive, CheckCircle, Activity } from "lucide-react";
 
 import { useDashboardStats } from "@/hooks/useDashboardStats";
+import { DatasetComments } from "@/components/DatasetComments";
 
 export default function DatasetPage() {
   const { stats } = useDashboardStats();
@@ -119,6 +120,8 @@ export default function DatasetPage() {
           ))}
         </div>
       </div>
+
+      <DatasetComments />
     </div>
   );
 }

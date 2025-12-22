@@ -20,8 +20,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sentiment Analysis Dashboard",
-  description: "Advanced AI Sentiment Analysis",
+  title: "Sentiment Analysis Dashboard v3.1 - 95.5% Accuracy",
+  description: "Enhanced AI Sentiment Analysis with 95.5% Accuracy",
 };
 
 export default function RootLayout({

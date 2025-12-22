@@ -39,15 +39,49 @@ export function LiveComments({ isStreaming = false, maxComments = 50 }: LiveComm
     { text: "Indonesia pasti bisa bangkit", sentiment: 'positive' as const, emotion: 'Optimisme' }
   ];
 
-  // Fetch real comments from dataset
+  // Fetch real comments from multi-layer backend
   const fetchRealComments = async () => {
     try {
-      const response = await fetch(`/api/real-comments?limit=${maxComments}`);
+      const response = await fetch(`/api/live-comments?videoId=lDtSjKb_8Jo&sentiment=true&filter=true&maxResults=${maxComments}`);
       const data = await response.json();
       
       if (data.comments && data.comments.length > 0) {
         const realComments = data.comments.map((comment: any) => ({
           id: comment.id,
+          author: comment.author,
+          text: comment.text,
+          sentiment: comment.sentiment,
+          confidence: comment.confidence,
+          timestamp: new Date(comment.publishedAt),
+          emotion: comment.layers?.layer2?.primary_emotion || 'Unknown',
+          reasoning: comment.reasoning,
+          model: comment.model,
+          layers: comment.layers,
+          coverage: comment.coverage
+        }));
+        
+        setComments(realComments);
+        
+        // Update stats with layer information
+        const newStats = {
+          total: realComments.length,
+          positive: realComments.filter(c => c.sentiment === 'positive').length,
+          negative: realComments.filter(c => c.sentiment === 'negative').length,
+          neutral: realComments.filter(c => c.sentiment === 'neutral').length
+        };
+        setStats(newStats);
+        
+        console.log(`✅ Loaded ${realComments.length} comments with multi-layer analysis`);
+        if (data.sentimentAnalysis?.layerInfo) {
+          console.log('📊 Layer Info:', data.sentimentAnalysis.layerInfo);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch real comments:', error);
+      // Fallback to sample comments
+      generateSampleComments();
+    }
+  };
           author: comment.author,
           text: comment.text,
           sentiment: comment.sentiment,

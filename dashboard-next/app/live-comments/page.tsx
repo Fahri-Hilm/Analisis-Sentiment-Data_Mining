@@ -18,6 +18,12 @@ interface LiveComment {
   model?: string;
   relevanceScore?: number;
   filterReason?: string;
+  layers?: {
+    layer1?: any;
+    layer2?: any;
+    layer3?: any;
+  };
+  coverage?: number;
 }
 
 export default function LiveCommentsPage() {

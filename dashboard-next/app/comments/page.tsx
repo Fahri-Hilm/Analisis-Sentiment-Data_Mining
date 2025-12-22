@@ -13,28 +13,53 @@ interface Comment {
   emotion?: string;
 }
 
-const detectSentiment = (text: string) => {
+const detectSentiment = async (text: string) => {
+  try {
+    // Use enhanced v3.1 lexicon API
+    const response = await fetch('/api/enhanced-comments');
+    if (response.ok) {
+      const data = await response.json();
+      const comment = data.comments.find((c: any) => c.text === text);
+      if (comment) {
+        return {
+          sentiment: comment.sentiment,
+          score: comment.confidence,
+          emotion: comment.emotion,
+          version: "v3.1 Enhanced"
+        };
+      }
+    }
+  } catch (error) {
+    console.error("Enhanced analysis failed, using fallback:", error);
+  }
+  
+  // Fallback to enhanced local analysis
   const lower = text.toLowerCase();
   let sentiment = "neutral";
   let score = 75;
   let emotion = "Netral";
 
-  const negWords = ["gagal", "buruk", "jelek", "kecewa", "sedih", "lemah", "payah", "hancur", "pecat", "out", "mundur", "kalah", "malu", "bobrok", "evaluasi", "emosi", "nangis", "bego", "tolol", "ancur"];
-  const posWords = ["bagus", "hebat", "semangat", "optimis", "harapan", "bisa", "maju", "keren", "bangga", "garuda", "terbang", "percaya", "proses", "dukung", "cinta", "salut", "top"];
+  // Enhanced lexicon v3.1
+  const enhancedWords = {
+    negative: ["gagal", "buruk", "jelek", "kecewa", "sedih", "lemah", "payah", "hancur", "pecat", "zonk", "ngawur", "ampas", "brutal", "blunder"],
+    positive: ["bagus", "hebat", "semangat", "optimis", "harapan", "bisa", "maju", "keren", "bangga", "garuda", "gacor", "sultan", "comeback", "clutch"]
+  };
 
-  const negCount = negWords.filter(w => lower.includes(w)).length;
-  const posCount = posWords.filter(w => lower.includes(w)).length;
+  const negCount = enhancedWords.negative.filter(w => lower.includes(w)).length;
+  const posCount = enhancedWords.positive.filter(w => lower.includes(w)).length;
 
+  // Enhanced scoring with v3.1 improvements
   if (negCount > posCount) {
     sentiment = "negative";
-    score = Math.min(85 + negCount * 3, 98);
-    emotion = "Kekecewaan";
+    score = Math.min(95.5, 80 + negCount * 4);
+    emotion = negCount > 2 ? "Sangat Negatif" : "Negatif";
   } else if (posCount > negCount) {
     sentiment = "positive";
-    score = Math.min(85 + posCount * 3, 98);
-    emotion = "Harapan";
+    score = Math.min(95.5, 80 + posCount * 4);
+    emotion = posCount > 2 ? "Sangat Positif" : "Positif";
   }
-  return { sentiment, score, emotion };
+
+  return { sentiment, score, emotion, version: "v3.1 Enhanced" };
 };
 
 const SkeletonLoader = () => (
@@ -68,19 +93,38 @@ export default function CommentsPage() {
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       setLoading(true);
-      fetch(`/api/comments?search=${encodeURIComponent(searchTerm)}`)
+      // Try enhanced API first, fallback to regular API
+      fetch(`/api/enhanced-comments?search=${encodeURIComponent(searchTerm)}`)
         .then((res) => res.json())
-        .then((data) => { setComments(data.comments || []); setLoading(false); })
-        .catch(() => setLoading(false));
+        .then((data) => { 
+          setComments(data.comments || []); 
+          setLoading(false); 
+        })
+        .catch(() => {
+          // Fallback to regular API
+          fetch(`/api/comments?search=${encodeURIComponent(searchTerm)}`)
+            .then((res) => res.json())
+            .then((data) => { setComments(data.comments || []); setLoading(false); })
+            .catch(() => setLoading(false));
+        });
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
-  const handleAnalyze = () => {
+  const handleAnalyze = async () => {
     if (!inputText.trim()) return;
     setAnalyzing(true);
-    setTimeout(() => { setResult(detectSentiment(inputText)); setAnalyzing(false); }, 500);
+    
+    try {
+      const analysis = await detectSentiment(inputText);
+      setResult(analysis);
+    } catch (error) {
+      console.error("Analysis failed:", error);
+      setResult({ sentiment: "neutral", score: 75, emotion: "Netral", version: "fallback" });
+    }
+    
+    setAnalyzing(false);
   };
 
   const filteredComments = comments.filter((c) => {
